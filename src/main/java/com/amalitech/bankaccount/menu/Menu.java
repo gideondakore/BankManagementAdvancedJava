@@ -1,10 +1,6 @@
 package com.amalitech.bankaccount.menu;
 
 
-import com.amalitech.bankaccount.account.Account;
-import com.amalitech.bankaccount.account.CheckingAccount;
-import com.amalitech.bankaccount.account.SavingsAccount;
-import com.amalitech.bankaccount.customer.Customer;
 import com.amalitech.bankaccount.enums.AccountType;
 import com.amalitech.bankaccount.enums.CustomerType;
 import com.amalitech.bankaccount.helpers.InputValidationHelper;
@@ -132,7 +128,7 @@ public class Menu {
 
         IO.println("""
                 
-                Customer type:
+                Account type:
                 1. Savings Account (Interest: 3.5%, Min Balance: $500)
                 2. Checking Account (Overdraft: $1,000, Monthly Fee: $10)
                 """);
@@ -154,6 +150,12 @@ public class Menu {
         double input;
         input = new InputValidationHelper(msg, errMsg, "").validatedDoubleInputPositiveValue();
         return input;
+    }
+
+    public void pressEnterToContinue(){
+            Scanner scanner = new Scanner(System.in);
+            IO.println("\nPress enter to continue...");
+            scanner.nextLine();
     }
 
 }

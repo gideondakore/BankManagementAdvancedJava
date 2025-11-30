@@ -1,12 +1,11 @@
 package com.amalitech.bankaccount.account;
 
-import com.amalitech.bankaccount.customer.Customer;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
 public class AccountManager {
-    private ArrayList<Account> account = new ArrayList<>(50);
+    private final ArrayList<Account> account = new ArrayList<>(50);
     private int accountCount;
 
     public AccountManager(){
@@ -46,32 +45,35 @@ public class AccountManager {
             return;
         }
 
+        int viewFiveAccount = 0;
+        final int numOfAllowViews = 5;
+        double totalBalance = 0.0;
+
+        String line = "--------------------------------------------------------------------------------------------------------------";
+
         StringBuilder stringBuilder = new StringBuilder();
 
         String heading = """
-                %s            |
-                %s            |
-                %s            |
-                %s            |
-                %s            |
-                """.formatted("ACC N0", "CUSTOMER NAME", "TYPE", "BALANCE", "STATUS");
+                %s
+                %s            |  %s             |  %s           |  %s           |  %s
+                %s
+                """.formatted(line, "ACC N0", "CUSTOMER NAME", "TYPE", "BALANCE", "STATUS", line);
 
         stringBuilder.append(heading);
 
         for(Account acc: this.account){
-            Customer customer = acc.getAccountCustomer();
-            String str = """
-                    %s            |
-                    %s            |
-                    %s            |
-                    %s            |
-                    %s
-                    """.formatted(acc.getAccountNumber(), customer.getName(), customer.getType().getDescription(), acc.getAccountBalance(), acc.getAccountStatus());
+            // View only five account
+            if(viewFiveAccount >= numOfAllowViews) break;
 
-            stringBuilder.append(str).append("\n");
+            stringBuilder.append(acc.viewAllAccounts(acc.getAccountCustomer())).append("\n").append(line).append("\n");
+            totalBalance += acc.getAccountBalance();
+
+            viewFiveAccount++;
         }
 
         IO.println(stringBuilder.toString());
+        IO.println("Total Account: " + viewFiveAccount);
+        IO.println("Total Account Balance: $" + totalBalance);
     }
 
     public double getTotalBalance(){

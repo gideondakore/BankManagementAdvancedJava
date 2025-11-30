@@ -1,6 +1,7 @@
 package com.amalitech.bankaccount;
 
 import com.amalitech.bankaccount.account.Account;
+import com.amalitech.bankaccount.account.AccountManager;
 import com.amalitech.bankaccount.account.CheckingAccount;
 import com.amalitech.bankaccount.account.SavingsAccount;
 import com.amalitech.bankaccount.customer.Customer;
@@ -12,15 +13,21 @@ import com.amalitech.bankaccount.menu.Menu;
 import com.amalitech.bankaccount.records.CustomerRecords;
 
 
+
 public class Main {
     public static void main(String[] args){
         Menu menu  = new Menu();
+        AccountManager accountManager = new AccountManager();
 
 
         while(true){
             menu.intro();
             int input = menu.getChoice();
-            IO.println("Enter choice: " + menu.getChoice());
+
+            if(input == 5){
+                IO.println("Application existed successfully...");
+                break;
+            }
 
             switch (input){
                 case 1: {
@@ -37,9 +44,6 @@ public class Main {
                     final double PREMIUM_CUSTOMER_MINIMUM_BALANCE = 10000;
                     String initialDepositMsg = "Enter initial deposit amount: $";
                     String initialDepositErrMsg = "Please provide a valid amount!";
-
-
-
 
                     CustomerRecords customerRecords = menu.createAccount();
                     name = customerRecords.name();
@@ -102,10 +106,20 @@ public class Main {
 
                     }
 
+                    // Add account to centralize account manager
+                    accountManager.addAccount(account);
                 }
+                break;
+
+                case 2: {
+                  accountManager.viewAllAccounts();
+                }
+                break;
             }
 
-            break;
+
+            menu.pressEnterToContinue();
+//            break;
         }
 
 

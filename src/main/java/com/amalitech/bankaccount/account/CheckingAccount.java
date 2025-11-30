@@ -32,6 +32,13 @@ public class CheckingAccount extends Account{
         return createdAt;
     }
 
+    public String viewAllAccounts(Customer customer){
+        return """
+                %s            |  %s             |  %s           |  %s           |  %s
+                              |  Overdraft Limit: %,.2f         | Monthly Fee: %,.2f
+                """.formatted(this.getAccountNumber(), customer.getName(), this.getType().getDescription(), this.getAccountBalance(), this.getAccountStatus(), this.overdraftLimit, this.monthlyFee);
+    }
+
     @Override
     public double withdrawal(double amount) throws IllegalArgumentException{
         if(amount < 0){

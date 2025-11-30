@@ -60,6 +60,7 @@ public abstract class Account implements DisplayCustomerDetailsAndGetCustomerTyp
 
 
     // Abstract methods
+    public abstract String viewAllAccounts(Customer customer);
 
 
     // Regular methods

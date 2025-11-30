@@ -10,7 +10,6 @@ public class TransactionManager {
     private ArrayList<Transaction> transactions = new ArrayList<>(200);
     private int transactionCount;
 
-
     public void addTransaction(Transaction transaction){
         this.transactions.add(transaction);
     }

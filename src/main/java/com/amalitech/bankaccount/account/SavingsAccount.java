@@ -26,6 +26,13 @@ public class SavingsAccount extends Account{
         return minimumBalance;
     }
 
+    public String viewAllAccounts(Customer customer){
+        return """
+                %s            |  %s             |  %s           |  %s           |  %s
+                              |  Interest Rate: %,.1f%%          | Min Balance: %,.2f%%
+                """.formatted(this.getAccountNumber(), customer.getName(), this.getType().getDescription(), this.getAccountBalance(), this.getAccountStatus(), this.interestRate * 100, this.minimumBalance);
+    }
+
     @Override
     public double withdrawal(double amount) throws IllegalArgumentException{
         if(amount <= 0){

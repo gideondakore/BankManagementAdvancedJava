@@ -1,17 +1,38 @@
 package com.amalitech.bankaccount.transaction;
 
+
 import com.amalitech.bankaccount.account.Account;
-import com.amalitech.bankaccount.customer.Customer;
 import com.amalitech.bankaccount.enums.TransactionType;
 
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 
 public class TransactionManager {
     private ArrayList<Transaction> transactions = new ArrayList<>(200);
     private int transactionCount;
+    private static int transactionCounter;
 
     public void addTransaction(Transaction transaction){
         this.transactions.add(transaction);
+    }
+
+    public void previewTransactionConfirmation(Account account, TransactionType transactionType, double transactionAmount){
+
+        String txnID = String.valueOf(Transaction.transactionCounter);
+        double newBalance = transactionType == TransactionType.DEPOSIT ? account.getAccountBalance() + transactionAmount : account.getAccountBalance() - transactionAmount;
+
+        IO.println("""
+                
+                TRANSACTION CONFIRMATION
+                ----------------------------------------------------------------------------------------
+                Transaction ID: TXN00%s
+                Account: %s
+                Type: %s
+                Amount: $%,.2f
+                Previous Balance: $%,.2f
+                New Balance: $%,.2f
+                Date/Time: %s
+                """.formatted(txnID, account.getAccountNumber(), transactionType.getDescription(), transactionAmount, account.getAccountBalance(), newBalance, ZonedDateTime.now().toString()));
     }
 
     public void viewTransactionsByAccount(String accountNumber){

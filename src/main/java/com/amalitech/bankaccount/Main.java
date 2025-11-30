@@ -115,11 +115,18 @@ public class Main {
                   accountManager.viewAllAccounts();
                 }
                 break;
+
+                case 3: {
+                    menu.processTransaction(accountManager.getAccount());
+                }
+                break;
+
+                default: {
+                    IO.println("Opps! Incorrect choice, try again.");
+                }
             }
 
-
             menu.pressEnterToContinue();
-//            break;
         }
 
 

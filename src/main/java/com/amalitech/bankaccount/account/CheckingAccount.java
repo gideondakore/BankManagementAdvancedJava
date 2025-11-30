@@ -40,7 +40,7 @@ public class CheckingAccount extends Account{
     }
 
     @Override
-    public double withdrawal(double amount) throws IllegalArgumentException{
+    public void withdrawal(double amount) throws IllegalArgumentException{
         if(amount < 0){
             throw new IllegalArgumentException("Amount must be greater than zero");
         }
@@ -58,7 +58,6 @@ public class CheckingAccount extends Account{
 
         super.withdrawal(amount);
 
-        return this.getAccountBalance();
     }
 
 

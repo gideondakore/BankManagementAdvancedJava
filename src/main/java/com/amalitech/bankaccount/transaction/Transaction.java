@@ -58,11 +58,5 @@ public class Transaction {
         this.type = type;
     }
 
-    //Regular methods
-    public void displayTransactionDetails() {
-        String details = "TransactionId: " + transactionId + "\nAccount: " + accountNumber + "\nType: " + type + "\nAmount: " + amount + "\nPrevous Balance: \nNew Balance: \nDate/Time";
-        IO.println(details);
-        //TODO:
-        // Show confirmation before finalizing
-    }
+
 }

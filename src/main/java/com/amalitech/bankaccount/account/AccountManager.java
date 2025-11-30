@@ -90,4 +90,8 @@ public class AccountManager {
     public int getAccountCount() {
         return accountCount;
     }
+
+    public ArrayList<Account> getAccount() {
+        return account;
+    }
 }

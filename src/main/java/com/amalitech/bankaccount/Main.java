@@ -21,8 +21,16 @@ public class Main {
         TransactionManager transactionManager = new TransactionManager();
 
 
+
         while (true) {
+            IO.println("Account Manager toString: " + accountManager);
+
             menu.intro();
+
+            IO.println("Menu: " + menu);
+            IO.println("Transaction Manager toString: " + transactionManager);
+
+
             int input = menu.getChoice();
 
             if (input == 5) {

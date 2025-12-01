@@ -344,4 +344,16 @@ public class Menu {
 
 
 
+    @Override
+    public String toString(){
+
+        return switch (choice) {
+            case 1 -> "1. Create Account";
+            case 2 -> "2. View Account";
+            case 3 -> "3. Process Transaction";
+            case 4 -> "4. View Transaction History";
+            case 5 -> "5. Exit";
+            default -> "No menu selected";
+        };
+    }
 }

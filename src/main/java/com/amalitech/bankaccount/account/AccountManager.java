@@ -3,6 +3,7 @@ package com.amalitech.bankaccount.account;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 public class AccountManager {
     private final ArrayList<Account> account = new ArrayList<>(50);
@@ -94,7 +95,25 @@ public class AccountManager {
         return accountCount;
     }
 
-    public ArrayList<Account> getAccount() {
+    public List<Account> getAccount() {
         return account;
+    }
+
+    @Override
+    public String toString(){
+        StringBuilder str = new StringBuilder();
+
+        str.append("[ ");
+        for(int i = 0; i < this.account.size(); i++){
+
+            if (i < (this.account.size() - 1)) {
+                str.append(this.account.get(i).getAccountNumber()).append(", ");
+            } else {
+                str.append(this.account.get(i).getAccountNumber());
+            }
+        }
+        str.append(" ]");
+
+        return str.toString();
     }
 }

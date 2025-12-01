@@ -72,5 +72,10 @@ public class Transaction {
         this.type = type;
     }
 
+    @Override
+    public String toString(){
+        return transactionId;
+    }
+
 
 }

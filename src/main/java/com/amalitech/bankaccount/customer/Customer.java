@@ -74,6 +74,11 @@ public abstract class Customer implements DisplayCustomerDetailsAndGetCustomerTy
     public void setType(CustomerType customerType){
         this.type = customerType;
     }
+
+    @Override
+    public String toString(){
+        return this.customerId;
+    }
 }
 
 

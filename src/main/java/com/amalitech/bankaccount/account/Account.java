@@ -72,5 +72,10 @@ public abstract class Account implements DisplayCustomerDetailsAndGetCustomerTyp
     public void withdrawal(double amount) throws IllegalArgumentException {
         this.balance -= amount;
     }
+
+    @Override
+    public String toString() {
+        return this.accountNumber;
+    }
 }
 

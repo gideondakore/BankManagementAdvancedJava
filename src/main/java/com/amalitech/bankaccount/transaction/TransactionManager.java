@@ -166,4 +166,22 @@ public class TransactionManager {
 
     }
 
+    @Override
+    public String toString(){
+        StringBuilder str = new StringBuilder();
+
+        str.append("[ ");
+        for(int i = 0; i < this.transactions.size(); i++){
+
+            if (i < (this.transactions.size() - 1)) {
+                str.append(this.transactions.get(i).getTransactionId()).append(", ");
+            } else {
+                str.append(this.transactions.get(i).getTransactionId());
+            }
+        }
+        str.append(" ]");
+
+        return str.toString();
+    }
+
 }

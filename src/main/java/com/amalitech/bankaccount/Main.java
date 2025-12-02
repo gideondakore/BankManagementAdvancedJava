@@ -23,12 +23,10 @@ public class Main {
 
 
         while (true) {
-            IO.println("Account Manager toString: " + accountManager);
 
             menu.intro();
 
             IO.println("Menu: " + menu);
-            IO.println("Transaction Manager toString: " + transactionManager);
 
 
             int input = menu.getChoice();
@@ -43,7 +41,7 @@ public class Main {
                 case 2 -> accountManager.viewAllAccounts();
                 case 3 -> menu.processTransaction(accountManager.getAccount(), transactionManager);
                 case 4 -> menu.viewTransactionHistory(accountManager.getAccount(), transactionManager);
-                default -> IO.println("Oops! Incorrect choice, try again.");
+                default -> IO.println("Oops! Incorrect choice,please try again.");
             }
 
             menu.pressEnterToContinue();

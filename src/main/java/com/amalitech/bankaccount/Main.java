@@ -66,7 +66,7 @@ public class Main {
         account.deposit(initialDeposit);
 
         // Add first deposit of account creation as a deposit transaction
-        Transaction transaction = new Transaction(account.getAccountNumber(), initialDeposit, account.getAccountBalance() + initialDeposit);
+        Transaction transaction = new Transaction(account.getAccountNumber(), initialDeposit, initialDeposit);
         transaction.setType(TransactionType.DEPOSIT.getDescription());
 
         transactionManager.addTransaction(transaction);

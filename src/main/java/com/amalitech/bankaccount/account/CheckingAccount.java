@@ -15,14 +15,10 @@ public class CheckingAccount extends Account{
 
     public  CheckingAccount(Customer customer){
         super(customer);
-        IO.println("================CHECKING ACCOUNT==============");
-        customer.displayCustomerDetails();
-
         overdraftLimit = 1000;
         monthlyFee = 10;
         this.setType(AccountType.CHECKING);
 
-        IO.println("ACCOUNT ID; " + this.getAccountNumber());
     }
 
     public double getOverdraftLimit() {

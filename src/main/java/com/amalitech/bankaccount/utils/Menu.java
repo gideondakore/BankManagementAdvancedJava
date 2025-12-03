@@ -278,14 +278,13 @@ public class Menu {
     public void makeTransaction(Account account, double transactionAmount, TransactionType transactionType, TransactionManager transactionManager) throws IllegalArgumentException{
         Transaction transaction;
         if(transactionType == TransactionType.DEPOSIT) {
-            account.deposit(transactionAmount);
-            transaction = new Transaction(account.getAccountNumber(), transactionAmount, account.getAccountBalance() + transactionAmount);
+            Account acc = account.deposit(transactionAmount);
+            transaction = new Transaction(account.getAccountNumber(), transactionAmount, account.getAccountBalance());
         } else {
             account.withdrawal(transactionAmount);
-            transaction = new Transaction(account.getAccountNumber(), transactionAmount, account.getAccountBalance() - transactionAmount);
+            transaction = new Transaction(account.getAccountNumber(), transactionAmount, account.getAccountBalance());
         }
         transaction.setType(transactionType.getDescription());
-        IO.println("Added transaction: " + transaction.getTransactionId());
         transactionManager.addTransaction(transaction);
     }
 

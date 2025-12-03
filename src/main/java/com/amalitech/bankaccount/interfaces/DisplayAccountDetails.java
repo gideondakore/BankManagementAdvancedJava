@@ -1,8 +1,5 @@
 package com.amalitech.bankaccount.interfaces;
 
-
-public interface DisplayCustomerDetailsAndGetCustomerType {
-
+public interface DisplayAccountDetails {
     public abstract void displayCustomerDetails();
-
 }

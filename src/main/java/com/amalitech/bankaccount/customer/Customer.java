@@ -1,9 +1,9 @@
 package com.amalitech.bankaccount.customer;
 
 import com.amalitech.bankaccount.enums.CustomerType;
-import com.amalitech.bankaccount.interfaces.DisplayCustomerDetailsAndGetCustomerType;
+import com.amalitech.bankaccount.interfaces.DisplayCustomerDetails;
 
-public abstract class Customer implements DisplayCustomerDetailsAndGetCustomerType {
+public abstract class Customer implements DisplayCustomerDetails {
     // instance variable
     private String customerId;
     private String name;

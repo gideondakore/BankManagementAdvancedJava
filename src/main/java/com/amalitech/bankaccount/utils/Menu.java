@@ -1,11 +1,10 @@
-package com.amalitech.bankaccount.menu;
+package com.amalitech.bankaccount.utils;
 
 
 import com.amalitech.bankaccount.account.Account;
 import com.amalitech.bankaccount.enums.AccountType;
 import com.amalitech.bankaccount.enums.CustomerType;
 import com.amalitech.bankaccount.enums.TransactionType;
-import com.amalitech.bankaccount.helpers.InputValidationHelper;
 import com.amalitech.bankaccount.records.CustomerRecords;
 import com.amalitech.bankaccount.transaction.Transaction;
 import com.amalitech.bankaccount.transaction.TransactionManager;

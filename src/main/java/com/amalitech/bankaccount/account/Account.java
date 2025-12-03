@@ -2,10 +2,10 @@ package com.amalitech.bankaccount.account;
 
 import com.amalitech.bankaccount.customer.Customer;
 import com.amalitech.bankaccount.enums.AccountType;
-import com.amalitech.bankaccount.interfaces.DisplayCustomerDetailsAndGetCustomerType;
+import com.amalitech.bankaccount.interfaces.DisplayAccountDetails;
 
 
-public abstract class Account implements DisplayCustomerDetailsAndGetCustomerType {
+public abstract class Account implements DisplayAccountDetails {
     private final String accountNumber;
     private final Customer customer;
     private double balance;

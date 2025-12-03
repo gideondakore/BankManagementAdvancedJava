@@ -4,7 +4,7 @@ import com.amalitech.bankaccount.account.*;
 import com.amalitech.bankaccount.customer.*;
 import com.amalitech.bankaccount.enums.AccountType;
 import com.amalitech.bankaccount.enums.CustomerType;
-import com.amalitech.bankaccount.menu.Menu;
+import com.amalitech.bankaccount.utils.Menu;
 import com.amalitech.bankaccount.records.CustomerRecords;
 import com.amalitech.bankaccount.transaction.TransactionManager;
 

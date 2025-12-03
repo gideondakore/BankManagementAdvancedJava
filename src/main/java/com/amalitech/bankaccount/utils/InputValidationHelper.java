@@ -1,4 +1,4 @@
-package com.amalitech.bankaccount.helpers;
+package com.amalitech.bankaccount.utils;
 
 import java.util.Scanner;
 import java.util.regex.Pattern;

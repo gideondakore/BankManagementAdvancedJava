@@ -21,7 +21,6 @@ public class Main {
         TransactionManager transactionManager = new TransactionManager();
 
 
-
         while (true) {
 
             menu.intro();

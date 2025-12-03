@@ -4,6 +4,8 @@ import com.amalitech.bankaccount.account.*;
 import com.amalitech.bankaccount.customer.*;
 import com.amalitech.bankaccount.enums.AccountType;
 import com.amalitech.bankaccount.enums.CustomerType;
+import com.amalitech.bankaccount.enums.TransactionType;
+import com.amalitech.bankaccount.transaction.Transaction;
 import com.amalitech.bankaccount.utils.Menu;
 import com.amalitech.bankaccount.records.CustomerRecords;
 import com.amalitech.bankaccount.transaction.TransactionManager;
@@ -37,7 +39,7 @@ public class Main {
             }
 
             switch (input) {
-                case 1 -> handleCreateAccount(menu, accountManager);
+                case 1 -> handleCreateAccount(menu, accountManager, transactionManager);
                 case 2 -> accountManager.viewAllAccounts();
                 case 3 -> menu.processTransaction(accountManager.getAccount(), transactionManager);
                 case 4 -> menu.viewTransactionHistory(accountManager.getAccount(), transactionManager);
@@ -48,7 +50,7 @@ public class Main {
         }
     }
 
-    private static void handleCreateAccount(Menu menu, AccountManager accountManager) {
+    private static void handleCreateAccount(Menu menu, AccountManager accountManager, TransactionManager transactionManager) {
         CustomerRecords info = menu.createAccount();
 
         CustomerType customerType = menu.customerType();
@@ -62,6 +64,13 @@ public class Main {
         Account account = createAccountByType(customer, accountType);
 
         account.deposit(initialDeposit);
+
+        // Add first deposit of account creation as a deposit transaction
+        Transaction transaction = new Transaction(account.getAccountNumber(), initialDeposit, account.getAccountBalance() + initialDeposit);
+        transaction.setType(TransactionType.DEPOSIT.getDescription());
+
+        transactionManager.addTransaction(transaction);
+
         account.displayAccountDetails();
 
         accountManager.addAccount(account);

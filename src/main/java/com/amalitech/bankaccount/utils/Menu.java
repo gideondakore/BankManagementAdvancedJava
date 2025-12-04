@@ -5,6 +5,7 @@ import com.amalitech.bankaccount.account.Account;
 import com.amalitech.bankaccount.enums.AccountType;
 import com.amalitech.bankaccount.enums.CustomerType;
 import com.amalitech.bankaccount.enums.TransactionType;
+import com.amalitech.bankaccount.interfaces.Transactable;
 import com.amalitech.bankaccount.records.CustomerRecords;
 import com.amalitech.bankaccount.transaction.Transaction;
 import com.amalitech.bankaccount.transaction.TransactionManager;
@@ -13,10 +14,12 @@ import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
-public class Menu {
+public class Menu implements Transactable {
     int choice;
     static String validNumberMsg = "Please enter a valid number and must be 1 or 2";
     static String validNumRange = "Select type (1-2): ";
+    TransactionManager transactionManager;
+    Account account;
     
     public void intro() {
 
@@ -114,6 +117,7 @@ public class Menu {
     }
 
     public void processTransaction(List<Account> account, TransactionManager transactionManager){
+        this.transactionManager = transactionManager;
         IO.println("""
                 
                 PROCESS TRANSACTION
@@ -170,9 +174,10 @@ public class Menu {
 
             try{
 
-            this.makeTransaction(selectedAcc, transactionAmount, transactionType, transactionManager);
+            this.account = selectedAcc;
+            done = this.processTransaction(transactionAmount, transactionType.getDescription());
+
             IO.println("✔ Transaction completed successfully!");
-            done = true;
             }catch (IllegalArgumentException err){
                 IO.println(err.getMessage());
             }
@@ -275,17 +280,21 @@ public class Menu {
 
     }
 
-    public void makeTransaction(Account account, double transactionAmount, TransactionType transactionType, TransactionManager transactionManager) throws IllegalArgumentException{
+    @Override
+    public boolean processTransaction(double transactionAmount, String transactionType) throws IllegalArgumentException{
         Transaction transaction;
-        if(transactionType == TransactionType.DEPOSIT) {
-            Account acc = account.deposit(transactionAmount);
-            transaction = new Transaction(account.getAccountNumber(), transactionAmount, account.getAccountBalance());
+
+        if(transactionType.equals(TransactionType.DEPOSIT.getDescription())) {
+            this.account.deposit(transactionAmount);
         } else {
-            account.withdrawal(transactionAmount);
-            transaction = new Transaction(account.getAccountNumber(), transactionAmount, account.getAccountBalance());
+            this.account.withdrawal(transactionAmount);
         }
-        transaction.setType(transactionType.getDescription());
-        transactionManager.addTransaction(transaction);
+        transaction = new Transaction(this.account.getAccountNumber(), transactionAmount, this.account.getAccountBalance());
+        transaction.setType(transactionType);
+        this.transactionManager.addTransaction(transaction);
+
+        return true;
+
     }
 
     public char promptValidYesOrNo(){

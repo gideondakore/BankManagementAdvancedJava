@@ -49,7 +49,7 @@ public class AccountManager {
         int numAccounts = 0;
         double totalBalance = 0.0;
 
-        String line = "--------------------------------------------------------------------------------------------------------------";
+        String line = "---------------------------------------------------------------------------------------------------------------------------";
 
         StringBuilder stringBuilder = new StringBuilder();
 

@@ -93,8 +93,10 @@ public class TransactionManager {
 
             if(trn.getType().equals(TransactionType.DEPOSIT.getDescription())){
                 tempStr = posSigned.formatted(trn.getTransactionId(), trn.getTimestamp(), trn.getType(), trn.getAmount(), trn.getBalanceAfter());
-            }else{
+            }else if(trn.getType().equals(TransactionType.WITHDRAWAL.getDescription())){
                 tempStr = negSigned.formatted(trn.getTransactionId(), trn.getTimestamp(), trn.getType(), trn.getAmount(), trn.getBalanceAfter());
+            }else{
+                tempStr = posSigned.formatted(trn.getTransactionId(), trn.getTimestamp(), trn.getType(), trn.getAmount(), trn.getBalanceAfter());
             }
 
             stringBuilder.append(tempStr).append("\n");

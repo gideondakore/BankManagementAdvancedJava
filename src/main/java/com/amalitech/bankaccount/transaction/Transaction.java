@@ -1,10 +1,13 @@
 package com.amalitech.bankaccount.transaction;
 
+import com.amalitech.bankaccount.enums.TransactionType;
+import com.amalitech.bankaccount.interfaces.Transactable;
+
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
-public class Transaction {
+public class Transaction{
     static int transactionCounter;
     private String transactionId;
     private String accountNumber;
@@ -76,6 +79,7 @@ public class Transaction {
     public String toString(){
         return transactionId;
     }
+
 
 
 }

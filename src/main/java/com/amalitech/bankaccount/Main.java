@@ -10,6 +10,8 @@ import com.amalitech.bankaccount.utils.Menu;
 import com.amalitech.bankaccount.records.CustomerRecords;
 import com.amalitech.bankaccount.transaction.TransactionManager;
 
+
+
 public class Main {
 
     private static final double SAVING_MINIMUM_BALANCE = 500;
@@ -19,17 +21,15 @@ public class Main {
 
     public static void main(String[] args) {
         Menu menu = new Menu();
-        Account[] mockAccounts = Main.populateWithCustomAccount();
-        AccountManager accountManager = new AccountManager(mockAccounts);
+
         TransactionManager transactionManager = new TransactionManager();
+        Account[] mockAccounts = Main.populateWithCustomAccount(transactionManager);
+        AccountManager accountManager = new AccountManager(mockAccounts);
 
 
         while (true) {
 
             menu.intro();
-
-            IO.println("Menu: " + menu);
-
 
             int input = menu.getChoice();
 
@@ -111,14 +111,24 @@ public class Main {
                 : new CheckingAccount(customer);
     }
 
-    private static Account[] populateWithCustomAccount (){
+    private static Account[] populateWithCustomAccount (TransactionManager transactionManager){
+        Transaction transaction;
+
         Account acc1 = new SavingsAccount(new PremiumCustomer("John Smith", 23, "+1-415-782-9364", "123 Main Street, United State")).deposit(5250);
         Account acc2 = new CheckingAccount(new PremiumCustomer("Sarah Johnson", 21, "+44-207-9463821", "45 Oak Ave., Apt. 2B, United Kingdom")).deposit(3450);
         Account acc3 = new SavingsAccount(new RegularCustomer("Michael Chen", 19, "+49-301-2345678", "12-34 Park Lane")).deposit(15750);
         Account acc4 = new CheckingAccount(new RegularCustomer("Emily Brown", 22, "+33-142-869753", "12-34 Park Lane, Germany")).deposit(890);
         Account acc5 = new SavingsAccount(new RegularCustomer("David Wilson", 28, "+61-298-765432", "P.O. Box 234 - Australia")).deposit(25300);
 
-        return new Account[]{acc1, acc2, acc3, acc4, acc5};
+        Account[] accsArr = new Account[]{acc1, acc2, acc3, acc4, acc5};
+
+        for(Account acc: accsArr){
+            transaction = new Transaction(acc.getAccountNumber(), acc.getAccountBalance(), acc.getAccountBalance());
+            transaction.setType(acc.getType().getDescription());
+            transactionManager.addTransaction(transaction);
+        }
+
+        return accsArr;
 
     }
 

@@ -3,6 +3,7 @@ package com.amalitech.bankaccount.transaction;
 
 import com.amalitech.bankaccount.account.Account;
 import com.amalitech.bankaccount.enums.TransactionType;
+import com.amalitech.bankaccount.enums.TransferToOrFromType;
 
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
@@ -73,37 +74,57 @@ public class TransactionManager {
         stringBuilder.append(heading);
 
 
-        String negSigned = """
-               %-8s              | %-20s              | %-6s            | -$%-10.2f              | $%-15.2f
-               """;
-
-        String posSigned = """
-               %-8s              | %-20s              | %-6s               | +$%-10.2f              | $%-15.2f
-               """;
-
-
-
         ArrayList<Transaction> sortedTransactions = new ArrayList<>(newTransactions);
         sortedTransactions.sort(Comparator.comparing(
                 Transaction::parseTimeStamp).reversed()
         );
 
         for(Transaction trn: sortedTransactions){
-            String tempStr;
-
-            if(trn.getType().equals(TransactionType.DEPOSIT.getDescription())){
-                tempStr = posSigned.formatted(trn.getTransactionId(), trn.getTimestamp(), trn.getType(), trn.getAmount(), trn.getBalanceAfter());
-            }else if(trn.getType().equals(TransactionType.WITHDRAWAL.getDescription())){
-                tempStr = negSigned.formatted(trn.getTransactionId(), trn.getTimestamp(), trn.getType(), trn.getAmount(), trn.getBalanceAfter());
-            }else{
-                tempStr = posSigned.formatted(trn.getTransactionId(), trn.getTimestamp(), trn.getType(), trn.getAmount(), trn.getBalanceAfter());
-            }
+            String tempStr = getFormattingString(trn);
 
             stringBuilder.append(tempStr).append("\n");
         }
         stringBuilder.append("----------------------------------------------------------------------------------------------------------------------------------------------");
 
         IO.println(stringBuilder.toString());
+    }
+
+    private static String getFormattingString(Transaction trn) {
+        String negSigned = """
+               %-8s              | %-20s              | %-6s            | -$%,-10.2f              | $%,-15.2f
+               """;
+
+        String posSigned = """
+               %-8s              | %-20s              | %-6s               | +$%,-10.2f              | $%,-15.2f
+               """;
+
+        String transferNegSigned = """
+               %-8s              | %-20s              | %-6s              | -$%,-10.2f              | $%,-15.2f
+               """;
+
+        String transferPosSigned = """
+               %-8s              | %-20s              | %-6s               | +$%,-10.2f              | $%,-15.2f
+               """;
+
+        String tempStr;
+
+        if(trn.getType().equals(TransactionType.DEPOSIT.getDescription())){
+            tempStr = posSigned.formatted(trn.getTransactionId(), trn.getTimestamp(), trn.getType(), trn.getAmount(), trn.getBalanceAfter());
+        }else if(trn.getType().equals(TransactionType.WITHDRAWAL.getDescription())){
+            tempStr = negSigned.formatted(trn.getTransactionId(), trn.getTimestamp(), trn.getType(), trn.getAmount(), trn.getBalanceAfter());
+        }else if(trn.getType().equals(TransactionType.TRANSFER.getDescription())){
+            TransferToOrFromType sign = trn.getTransferToOrFrom() == TransferToOrFromType.FROM ? TransferToOrFromType.FROM : TransferToOrFromType.TO;
+
+            if(TransferToOrFromType.FROM == sign){
+                tempStr = transferNegSigned.formatted(trn.getTransactionId(), trn.getTimestamp(), trn.getType(), trn.getAmount(), trn.getBalanceAfter());
+            }else{
+                tempStr = transferPosSigned.formatted(trn.getTransactionId(), trn.getTimestamp(), trn.getType(), trn.getAmount(), trn.getBalanceAfter());
+            }
+
+        }else{
+            tempStr = posSigned.formatted(trn.getTransactionId(), trn.getTimestamp(), trn.getType(), trn.getAmount(), trn.getBalanceAfter());
+        }
+        return tempStr;
     }
 
     public double calculateTotalDeposits(String accountNumber) {

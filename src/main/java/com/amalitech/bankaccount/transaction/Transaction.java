@@ -1,6 +1,7 @@
 package com.amalitech.bankaccount.transaction;
 
 import com.amalitech.bankaccount.enums.TransactionType;
+import com.amalitech.bankaccount.enums.TransferToOrFromType;
 import com.amalitech.bankaccount.interfaces.Transactable;
 
 import java.time.LocalDateTime;
@@ -15,6 +16,7 @@ public class Transaction{
     private double amount;
     private double balanceAfter;
     private String timestamp;
+    private TransferToOrFromType transferToOrFrom;
 
     public Transaction(){
         super();
@@ -69,10 +71,18 @@ public class Transaction{
         return timestamp;
     }
 
+    public TransferToOrFromType getTransferToOrFrom(){
+        return transferToOrFrom;
+    }
+
 
     // Setters
     public void setType(String type){
         this.type = type;
+    }
+
+    public void setTransferToOrFrom(TransferToOrFromType transferToOrFrom){
+        this.transferToOrFrom = transferToOrFrom;
     }
 
     @Override

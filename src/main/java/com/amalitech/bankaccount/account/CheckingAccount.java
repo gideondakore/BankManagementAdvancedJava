@@ -12,7 +12,6 @@ public class CheckingAccount extends Account{
     private final LocalDate createdAt = LocalDate.now();
 
 
-
     public  CheckingAccount(Customer customer){
         super(customer);
         overdraftLimit = 1000;

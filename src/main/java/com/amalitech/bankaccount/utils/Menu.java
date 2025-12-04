@@ -5,6 +5,7 @@ import com.amalitech.bankaccount.account.Account;
 import com.amalitech.bankaccount.enums.AccountType;
 import com.amalitech.bankaccount.enums.CustomerType;
 import com.amalitech.bankaccount.enums.TransactionType;
+import com.amalitech.bankaccount.enums.TransferToOrFromType;
 import com.amalitech.bankaccount.interfaces.Transactable;
 import com.amalitech.bankaccount.records.CustomerRecords;
 import com.amalitech.bankaccount.transaction.Transaction;
@@ -19,7 +20,8 @@ public class Menu implements Transactable {
     static String validNumberMsg = "Please enter a valid number and must be 1 or 2";
     static String validNumRange = "Select type (1-2): ";
     TransactionManager transactionManager;
-    Account account;
+    Account accountSelectedForTransaction;
+    Account transferAccount;
     
     public void intro() {
 
@@ -116,7 +118,8 @@ public class Menu implements Transactable {
         return new CustomerRecords(name, age, contact, address);
     }
 
-    public void processTransaction(List<Account> account, TransactionManager transactionManager){
+    public void performTransaction(List<Account> accounts, TransactionManager transactionManager){
+        Account transferAcc;
         this.transactionManager = transactionManager;
         IO.println("""
                 
@@ -124,14 +127,13 @@ public class Menu implements Transactable {
                 -----------------------------------------------
                 """);
 
-        String accNumber;
-        Account selectedAcc;
         TransactionType transactionType;
         double transactionAmount;
         char yesOrNo;
 
-        do {
-            accNumber = new InputValidationHelper("Enter Account Number: ", """
+
+
+        this.accountSelectedForTransaction = getAccountSelectedForTransaction(accounts, "Enter Account Number: ", """
                     Please provide a valid account number!
                     
                     Example format:
@@ -139,22 +141,33 @@ public class Menu implements Transactable {
                     ACC002
                     ACC0010
                     ACC00120
-                    """, "^ACC00\\d+$").validatedStringInputValue();
+                    """);
 
-            selectedAcc = this.getAccountForTransaction(account, accNumber);
+        transactionType = this.transactionType();
 
-        } while (selectedAcc == null);
+        if (TransactionType.TRANSFER == transactionType){
+            transferAcc = getAccountSelectedForTransaction(accounts, "Enter Recipient Account Number: ", """
+                    Please provide a valid recipient account number!
+                    
+                    Example format:
+                    ACC001
+                    ACC002
+                    ACC0010
+                    ACC00120
+                    """);
 
+            this.transferAccount = transferAcc;
+        }else{
 
-        IO.println("""
+            IO.println("""
                 
                 Account Details:
                 Customer: %s
                 Account Type: %s
-                Current Balance: %s
-                """.formatted(selectedAcc.getAccountCustomer().getName(), selectedAcc.getType(), selectedAcc.getAccountBalance()));
+                Current Balance: $%,.2f
+                """.formatted(this.accountSelectedForTransaction.getAccountCustomer().getName(), this.accountSelectedForTransaction.getType(), this.accountSelectedForTransaction.getAccountBalance()));
+        }
 
-        transactionType = this.transactionType();
 
         boolean done = false;
 
@@ -163,26 +176,28 @@ public class Menu implements Transactable {
             transactionAmount = this.acceptDoubleInputValue("Enter amount: $", "Please provide a valid amount");
 
 
-            new TransactionManager().previewTransactionConfirmation(selectedAcc, transactionType, transactionAmount);
+            new TransactionManager().previewTransactionConfirmation(this.accountSelectedForTransaction, transactionType, transactionAmount);
 
             yesOrNo = this.promptValidYesOrNo();
 
             if(yesOrNo == 'N') {
                 IO.println("❌ Transaction unsuccessful!");
                 done = true;
+            }else{
+                try{
+
+                    done = this.processTransaction(transactionAmount, transactionType.getDescription());
+
+                    IO.println("✔ Transaction completed successfully!");
+                }catch (IllegalArgumentException err){
+                    IO.println(err.getMessage());
+                }
             }
 
-            try{
 
-            this.account = selectedAcc;
-            done = this.processTransaction(transactionAmount, transactionType.getDescription());
-
-            IO.println("✔ Transaction completed successfully!");
-            }catch (IllegalArgumentException err){
-                IO.println(err.getMessage());
-            }
         }
     }
+
 
     // Getting customer type
     public CustomerType customerType(){
@@ -228,12 +243,14 @@ public class Menu implements Transactable {
                 Transaction type:
                 1. Deposit
                 2. Withdrawal
+                3. Transfer
                 """);
 
-        input = new InputValidationHelper(validNumRange, validNumberMsg, "").validatedIntInputValueWithRange(1, 2);
+        input = new InputValidationHelper(validNumRange, validNumberMsg, "").validatedIntInputValueWithRange(1, 3);
 
         if(input == 1) return TransactionType.DEPOSIT;
-        return TransactionType.WITHDRAWAL;
+        if(input == 2) return TransactionType.WITHDRAWAL;
+        return TransactionType.TRANSFER;
     }
 
 
@@ -280,18 +297,36 @@ public class Menu implements Transactable {
 
     }
 
+
+
     @Override
     public boolean processTransaction(double transactionAmount, String transactionType) throws IllegalArgumentException{
         Transaction transaction;
+        Transaction transfer;
 
         if(transactionType.equals(TransactionType.DEPOSIT.getDescription())) {
-            this.account.deposit(transactionAmount);
+            this.accountSelectedForTransaction.deposit(transactionAmount);
         } else {
-            this.account.withdrawal(transactionAmount);
+            // Withdraw from current user account
+            this.accountSelectedForTransaction.withdrawal(transactionAmount);
+
+            // Transfer to recipient account
+            if(transactionType.equals(TransactionType.TRANSFER.getDescription())){
+                this.transferAccount.deposit(transactionAmount);
+                transfer = new Transaction(this.transferAccount.getAccountNumber(), transactionAmount, this.transferAccount.getAccountBalance());
+                transfer.setType(TransactionType.TRANSFER.getDescription());
+                this.transactionManager.addTransaction(transfer);
+                transfer.setTransferToOrFrom(TransferToOrFromType.TO);
+            }
         }
-        transaction = new Transaction(this.account.getAccountNumber(), transactionAmount, this.account.getAccountBalance());
+
+        transaction = new Transaction(this.accountSelectedForTransaction.getAccountNumber(), transactionAmount, this.accountSelectedForTransaction.getAccountBalance());
         transaction.setType(transactionType);
         this.transactionManager.addTransaction(transaction);
+
+        if(transactionType.equals(TransactionType.TRANSFER.getDescription())){
+            transaction.setTransferToOrFrom(TransferToOrFromType.FROM);
+        }
 
         return true;
 
@@ -350,7 +385,6 @@ public class Menu implements Transactable {
     }
 
 
-
     @Override
     public String toString(){
 
@@ -362,5 +396,19 @@ public class Menu implements Transactable {
             case 5 -> "5. Exit";
             default -> "No menu selected";
         };
+    }
+
+    private Account getAccountSelectedForTransaction(List<Account> accounts, String msg, String errMsg){
+        String accNumber;
+        Account selectedAcc;
+
+        do {
+            accNumber = new InputValidationHelper(msg, errMsg, "^ACC00\\d+$").validatedStringInputValue();
+
+            selectedAcc = this.getAccountForTransaction(accounts, accNumber);
+
+        } while (selectedAcc == null);
+
+        return selectedAcc;
     }
 }

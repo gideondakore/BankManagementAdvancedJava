@@ -6,7 +6,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class AccountManager {
-    private final ArrayList<Account> account = new ArrayList<>(50);
+    private final ArrayList<Account> accounts = new ArrayList<>(50);
     private int accountCount;
 
     public AccountManager(){
@@ -14,22 +14,22 @@ public class AccountManager {
     }
 
     public AccountManager(Account account){
-        this.account.add(account);
-        this.accountCount = this.account.size();
+        this.accounts.add(account);
+        this.accountCount = this.accounts.size();
     }
 
     public AccountManager(Account[] accArr){
-        Collections.addAll(account, accArr);
-        this.accountCount = this.account.size();
+        Collections.addAll(accounts, accArr);
+        this.accountCount = this.accounts.size();
     }
 
     public void addAccount(Account acc){
-        this.account.add(acc);
+        this.accounts.add(acc);
         this.accountCount++;
     }
 
     public Account findAccount(String accNumber){
-        for(Account acc: this.account){
+        for(Account acc: this.accounts){
             if(acc.getAccountNumber().equals(accNumber)) return acc;
         }
 
@@ -37,7 +37,7 @@ public class AccountManager {
     }
 
     public void viewAllAccounts(){
-        if(this.account.isEmpty()){
+        if(this.accounts.isEmpty()){
             IO.println("""
                     -------------------------------------------
                     No account account created yet.
@@ -64,7 +64,7 @@ public class AccountManager {
 
 
 
-        for(Account acc: this.account){
+        for(Account acc: this.accounts){
 
             stringBuilder.append(acc.viewAllAccounts(acc.getAccountCustomer())).append("\n").append(line).append("\n");
             totalBalance += acc.getAccountBalance();
@@ -81,7 +81,7 @@ public class AccountManager {
     public double getTotalBalance(){
         double tempTotal = 0.0;
 
-        for(Account acc: account){
+        for(Account acc: accounts){
             tempTotal += acc.getAccountBalance();
         }
 
@@ -93,8 +93,8 @@ public class AccountManager {
         return accountCount;
     }
 
-    public List<Account> getAccount() {
-        return account;
+    public List<Account> getAccounts() {
+        return accounts;
     }
 
     @Override
@@ -102,12 +102,12 @@ public class AccountManager {
         StringBuilder str = new StringBuilder();
 
         str.append("[ ");
-        for(int i = 0; i < this.account.size(); i++){
+        for(int i = 0; i < this.accounts.size(); i++){
 
-            if (i < (this.account.size() - 1)) {
-                str.append(this.account.get(i).getAccountNumber()).append(", ");
+            if (i < (this.accounts.size() - 1)) {
+                str.append(this.accounts.get(i).getAccountNumber()).append(", ");
             } else {
-                str.append(this.account.get(i).getAccountNumber());
+                str.append(this.accounts.get(i).getAccountNumber());
             }
         }
         str.append(" ]");

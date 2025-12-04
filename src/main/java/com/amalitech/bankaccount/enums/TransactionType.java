@@ -2,7 +2,8 @@ package com.amalitech.bankaccount.enums;
 
 public enum TransactionType {
     DEPOSIT("Deposit"),
-    WITHDRAWAL("Withdrawal");
+    WITHDRAWAL("Withdrawal"),
+    TRANSFER ("Transfer");
 
     private final String description;
 

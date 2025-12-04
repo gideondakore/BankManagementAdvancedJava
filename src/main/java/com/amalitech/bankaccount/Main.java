@@ -41,8 +41,8 @@ public class Main {
             switch (input) {
                 case 1 -> handleCreateAccount(menu, accountManager, transactionManager);
                 case 2 -> accountManager.viewAllAccounts();
-                case 3 -> menu.processTransaction(accountManager.getAccount(), transactionManager);
-                case 4 -> menu.viewTransactionHistory(accountManager.getAccount(), transactionManager);
+                case 3 -> menu.performTransaction(accountManager.getAccounts(), transactionManager);
+                case 4 -> menu.viewTransactionHistory(accountManager.getAccounts(), transactionManager);
                 default -> IO.println("Oops! Incorrect choice,please try again.");
             }
 
@@ -124,7 +124,7 @@ public class Main {
 
         for(Account acc: accsArr){
             transaction = new Transaction(acc.getAccountNumber(), acc.getAccountBalance(), acc.getAccountBalance());
-            transaction.setType(acc.getType().getDescription());
+            transaction.setType(TransactionType.DEPOSIT.getDescription());
             transactionManager.addTransaction(transaction);
         }
 

@@ -4,29 +4,52 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Account manager for managing account creation during program running in memory
+ */
 public class AccountManager {
     private final ArrayList<Account> accounts = new ArrayList<>(50);
     private int accountCount;
 
+    /**
+     * AcountManager no-arg constructor
+     */
     public AccountManager(){
         this.accountCount = 0;
     }
 
+    /**
+     * AccountManager arg constructor. It accepts an Account
+     * @param account
+     */
     public AccountManager(Account account){
         this.accounts.add(account);
         this.accountCount = this.accounts.size();
     }
 
+    /**
+     * AccountManager arg constructor. It accepts an array of Account
+     * @param accArr
+     */
     public AccountManager(Account[] accArr){
         Collections.addAll(accounts, accArr);
         this.accountCount = this.accounts.size();
     }
 
+    /**
+     * For adding account
+     * @param acc
+     */
     public void addAccount(Account acc){
         this.accounts.add(acc);
         this.accountCount++;
     }
 
+    /**
+     * For finding account
+     * @param accNumber
+     * @return
+     */
     public Account findAccount(String accNumber){
         for(Account acc: this.accounts){
             if(acc.getAccountNumber().equals(accNumber)) return acc;
@@ -35,6 +58,9 @@ public class AccountManager {
         return null;
     }
 
+    /**
+     * For viewing all accounts in the Account Manager
+     */
     public void viewAllAccounts(){
         if(this.accounts.isEmpty()){
             IO.println("""
@@ -77,6 +103,10 @@ public class AccountManager {
         IO.println("Total Account Balance: $%,.2f".formatted(totalBalance));
     }
 
+    /**
+     *
+     * @return Get total account balance in the Account Manager
+     */
     public double getTotalBalance(){
         double tempTotal = 0.0;
 
@@ -88,14 +118,26 @@ public class AccountManager {
 
     }
 
+    /**
+     *
+     * @return Get number of accounts in the account Manager
+     */
     public int getAccountCount() {
         return accountCount;
     }
 
+    /**
+     *
+     * @return List of all Accounts
+     */
     public List<Account> getAccounts() {
         return accounts;
     }
 
+    /**
+     * Custom override implementation of the String method
+     * @return Strings of account number formatted as an array
+     */
     @Override
     public String toString(){
         StringBuilder str = new StringBuilder();
@@ -115,6 +157,12 @@ public class AccountManager {
     }
 
 
+    /**
+     * For getting specific account from the List of Accounts
+     * @param account
+     * @param accNum
+     * @return
+     */
     public static Account getAccountForTransaction(List<Account> account, String accNum){
         Account selectedAcc = null;
 

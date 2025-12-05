@@ -2,7 +2,6 @@ package com.amalitech.bankaccount.account;
 
 import com.amalitech.bankaccount.customer.Customer;
 import com.amalitech.bankaccount.enums.AccountType;
-import com.amalitech.bankaccount.exceptions.InsufficientFundsException;
 import com.amalitech.bankaccount.exceptions.InvalidAmountException;
 import com.amalitech.bankaccount.exceptions.OverdraftExceededException;
 
@@ -10,6 +9,9 @@ import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 
+/**
+ * Checking account class
+ */
 public class CheckingAccount extends Account{
     private final double overdraftLimit;
     private final double monthlyFee;

@@ -7,6 +7,9 @@ import com.amalitech.bankaccount.exceptions.InvalidAmountException;
 
 import java.text.DecimalFormat;
 
+/**
+ * Savings account class
+ */
 public class SavingsAccount extends Account{
     private final double interestRate;
     private final double minimumBalance;

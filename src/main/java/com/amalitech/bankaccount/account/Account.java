@@ -7,7 +7,9 @@ import com.amalitech.bankaccount.exceptions.InvalidAmountException;
 import com.amalitech.bankaccount.exceptions.OverdraftExceededException;
 import com.amalitech.bankaccount.interfaces.DisplayAccountDetails;
 
-
+/**
+ * Account class
+ */
 public abstract class Account implements DisplayAccountDetails {
     private final String accountNumber;
     private final Customer customer;
@@ -127,10 +129,13 @@ public abstract class Account implements DisplayAccountDetails {
       }
 
 
+
     /**
      * Method for withdrawing from account
      * @param amount
-     * @throws IllegalArgumentException
+     * @throws InvalidAmountException
+     * @throws InsufficientFundsException
+     * @throws OverdraftExceededException
      */
     public void withdrawal(double amount) throws InvalidAmountException, InsufficientFundsException, OverdraftExceededException {
         this.balance -= amount;

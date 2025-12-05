@@ -1,5 +1,9 @@
 package com.amalitech.bankaccount.account;
 
+import com.amalitech.bankaccount.transaction.Transaction;
+import com.amalitech.bankaccount.transaction.TransactionManager;
+import com.amalitech.bankaccount.utils.InputValidationHelper;
+import com.amalitech.bankaccount.utils.Menu;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -113,5 +117,42 @@ public class AccountManager {
         str.append(" ]");
 
         return str.toString();
+    }
+
+    public void getAccountStatement(String accNumber, List<Transaction> transactions, List<Account> accountstList){
+        Account selectedAcc;
+        List<Transaction> newTransactions = TransactionManager.getAllTransactions(accNumber, transactions);
+
+        IO.println("""
+                GENERATE ACCOUNT STATEMENT
+                -----------------------------------------------------
+                """);
+
+        accNumber = InputValidationHelper.validatedStringInputValue("Enter Account Number: ", """
+                    Please provide a valid account number!
+                    
+                    Example format:
+                    ACC001
+                    ACC002
+                    ACC0010
+                    ACC00120
+                    """, "^ACC00\\d+$");
+
+        selectedAcc = Menu.getAccountForTransaction(accountstList, accNumber);
+
+        IO.println("""
+                
+                Account: %s (%s)
+                Current Balance: %,.2f
+                """);
+
+        IO.println("""
+                Transactions:
+                -------------------------------------------------------------------
+                
+                """);
+
+
+
     }
 }

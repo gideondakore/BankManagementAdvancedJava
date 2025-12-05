@@ -43,8 +43,8 @@ public class Main {
 
             switch (input) {
                 case 1 -> manageAccount();
-                case 2 -> accountManager.viewAllAccounts();
-                case 3 -> Main.performTransaction();
+                case 2 -> Main.performTransaction();
+                case 3 -> menu.accountStatement(accountManager.getAccounts(), transactionManager);
                 case 4 -> menu.viewTransactionHistory(accountManager.getAccounts(), transactionManager);
                 default -> IO.println("Oops! Incorrect choice,please try again.");
             }
@@ -136,14 +136,12 @@ public class Main {
 
     private static void manageAccount(){
         int input;
-
-        input = InputValidationHelper.validatedIntInputValueWithRange(1, 2, """                
+        IO.println("""                
                 1. Create Account
                 2. View Account
-                
-                Select action:
-                
-                """, "Please provide a valid input. Input must be only numbers from 1-2");
+                """);
+
+        input = InputValidationHelper.validatedIntInputValueWithRange(1, 2, "Select action: ", "Please provide a valid input. Input must be only numbers from 1-2");
 
         switch (input){
             case 1 -> handleCreateAccount(menu, Main.accountManager, Main.transactionManager);
@@ -155,12 +153,12 @@ public class Main {
 
     private static void performTransaction(){
         int input;
-        input = InputValidationHelper.validatedIntInputValueWithRange(1, 2, """                
+
+        IO.println("""                
                 1. Process Transaction
                 2. View Transaction History
-                
-                Select action:
-                """, "Please provide a valid input. Input must be only numbers from 1-2");
+                """);
+        input = InputValidationHelper.validatedIntInputValueWithRange(1, 2, "Select action: ", "Please provide a valid input. Input must be only numbers from 1-2");
 
         switch (input){
             case 1 -> menu.performTransaction(accountManager.getAccounts(), transactionManager);

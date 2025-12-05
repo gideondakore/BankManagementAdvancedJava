@@ -51,7 +51,7 @@ public class TransactionManager {
                 """.formatted(txnID, account.getAccountNumber(), transactionType.getDescription(), transactionAmount, account.getAccountBalance(), newBalance, ZonedDateTime.now().toString()));
     }
 
-    public void viewTransactionsByAccount(String accountNumber){
+    public void viewTransactionsByAccount(String accountNumber, String msg){
 
         List<Transaction> newTransactions = getAllTransactions(accountNumber, this.transactions);
 
@@ -67,11 +67,11 @@ public class TransactionManager {
         StringBuilder stringBuilder = new StringBuilder();
 
         String heading = """
-                TRANSACTION HISTORY
+                %s
                 ----------------------------------------------------------------------------------------------------------------------------------------------
                 %-8s              | %-20s                | %-6s                | %-10s                | %-15s
                 ----------------------------------------------------------------------------------------------------------------------------------------------
-                """.formatted("TXN ID", "DATE/TIME", "TYPE", "AMOUNT", "BALANCE");
+                """.formatted(msg, "TXN ID", "DATE/TIME", "TYPE", "AMOUNT", "BALANCE");
 
 
         stringBuilder.append(heading);

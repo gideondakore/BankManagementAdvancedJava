@@ -19,26 +19,23 @@ public class Menu implements Transactable {
     int choice;
     static String validNumberErrMsg = "Please enter a valid number and must be 1 or 2";
     static String validNumRangeMsg = "Select type (1-2): ";
+    static String enterAccNumMsg = "Enter Account Number: ";
+    static String validAccNumRegex = "^ACC00\\d+$";
+    static String validAccNumMsg = """
+                    Please provide a valid account number!
+                    
+                    Example format:
+                    ACC001
+                    ACC002
+                    ACC0010
+                    ACC00120
+                    """;
+
     TransactionManager transactionManager;
     Account accountSelectedForTransaction;
     Account recipientAccount;
     
     public void intro() {
-//        String introFormattedStr = """
-//                --------------------------------------------
-//                --------------------------------------------
-//                |                                          |
-//
-//                |     BANK ACCOUNT MANAGEMENT - MAIN MENU  |                                 |
-//                --------------------------------------------
-//                --------------------------------------------
-//
-//                1. Create Account
-//                2. View Account
-//                3. Process Transaction
-//                4. View Transaction History
-//                5. Exit
-//                """;
 
         String introFormattedStr = """
                 --------------------------------------------
@@ -145,15 +142,7 @@ public class Menu implements Transactable {
 
 
 
-        this.accountSelectedForTransaction = getAccountSelectedForTransaction(accounts, "Enter Account Number: ", """
-                    Please provide a valid account number!
-                    
-                    Example format:
-                    ACC001
-                    ACC002
-                    ACC0010
-                    ACC00120
-                    """);
+        this.accountSelectedForTransaction = getAccountSelectedForTransaction(accounts, enterAccNumMsg, validAccNumMsg);
 
         transactionType = this.transactionType();
 
@@ -307,7 +296,7 @@ public class Menu implements Transactable {
             scanner.nextLine();
     }
 
-    public Account getAccountForTransaction(List<Account> account, String accNum){
+    public static Account getAccountForTransaction(List<Account> account, String accNum){
         Account selectedAcc = null;
 
         for(Account acc: account){
@@ -394,17 +383,9 @@ public class Menu implements Transactable {
                 """);
 
         do {
-            accNumber = InputValidationHelper.validatedStringInputValue("Enter Account Number: ", """
-                    Please provide a valid account number!
-                    
-                    Example format:
-                    ACC001
-                    ACC002
-                    ACC0010
-                    ACC00120
-                    """, "^ACC00\\d+$");
+            accNumber = InputValidationHelper.validatedStringInputValue("Enter Account Number: ", validAccNumMsg, validAccNumRegex);
 
-            selectedAcc = this.getAccountForTransaction(account, accNumber);
+            selectedAcc = Menu.getAccountForTransaction(account, accNumber);
 
         } while (selectedAcc == null);
 
@@ -417,8 +398,52 @@ public class Menu implements Transactable {
                 
                 """.formatted(selectedAcc.getAccountNumber(), selectedAcc.getAccountCustomer().getName(), selectedAcc.getType().getDescription(), selectedAcc.getAccountBalance()));
 
-        transactionManager.viewTransactionsByAccount(accNumber);
+        transactionManager.viewTransactionsByAccount(accNumber, "TRANSACTION HISTORY");
     }
+
+    public void accountStatement(List<Account> account, TransactionManager transactionManager){
+        String accNumber;
+        Account selectedAcc;
+
+        IO.println("""
+                
+                GENERATE ACCOUNT STATEMENT
+                --------------------------
+                """);
+
+        do {
+            accNumber = InputValidationHelper.validatedStringInputValue(enterAccNumMsg, validAccNumMsg, validAccNumRegex);
+
+            selectedAcc = Menu.getAccountForTransaction(account, accNumber);
+
+        } while (selectedAcc == null);
+
+
+        IO.println("""
+                Account: %s - %s
+                Current Balance: $%,.2f
+                """.formatted(selectedAcc.getAccountNumber(), selectedAcc.getAccountCustomer().getName(), selectedAcc.getAccountBalance()));
+
+        transactionManager.viewTransactionsByAccount(accNumber, "Transactions:");
+
+        List<Transaction> newTransactions = TransactionManager.getAllTransactions(accNumber, transactionManager.getTransactions());
+
+        double netCharge;
+
+        Transaction getLastTransaction = newTransactions.getLast();
+
+        if(newTransactions.isEmpty()) netCharge = 0.0;
+        else netCharge = getLastTransaction.getBalanceAfter();
+
+        if (getLastTransaction.getBalanceAfter() < 0)
+            IO.println("Net Charge: %s%,.2f".formatted("-$", getLastTransaction.getBalanceAfter()));
+        else
+            IO.println("Net Charge: %s%,.2f".formatted((getLastTransaction.getBalanceAfter() == 0 ? "" : "+$"), getLastTransaction.getBalanceAfter() == 0 ? netCharge : getLastTransaction.getBalanceAfter()));
+
+        IO.println("✓ Statement generated successfully");
+
+    }
+
 
 
     @Override
@@ -434,14 +459,14 @@ public class Menu implements Transactable {
         };
     }
 
-    private Account getAccountSelectedForTransaction(List<Account> accounts, String msg, String errMsg){
+    public static Account getAccountSelectedForTransaction(List<Account> accounts, String msg, String errMsg){
         String accNumber;
         Account selectedAcc;
 
         do {
-            accNumber = InputValidationHelper.validatedStringInputValue(msg, errMsg, "^ACC00\\d+$");
+            accNumber = InputValidationHelper.validatedStringInputValue(msg, errMsg, validAccNumRegex);
 
-            selectedAcc = this.getAccountForTransaction(accounts, accNumber);
+            selectedAcc = Menu.getAccountForTransaction(accounts, accNumber);
 
         } while (selectedAcc == null);
 

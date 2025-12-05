@@ -64,9 +64,6 @@ public class TransactionManager {
             return;
         }
 
-
-
-
         StringBuilder stringBuilder = new StringBuilder();
 
         String heading = """
@@ -104,14 +101,6 @@ public class TransactionManager {
                %-8s              | %-20s              | %-6s               | +$%,-10.2f              | $%,-15.2f
                """;
 
-        String transferNegSigned = """
-               %-8s              | %-20s              | %-6s              | -$%,-10.2f              | $%,-15.2f
-               """;
-
-        String transferPosSigned = """
-               %-8s              | %-20s              | %-6s               | +$%,-10.2f              | $%,-15.2f
-               """;
-
         String tempStr;
 
         if(trn.getType().equals(TransactionType.DEPOSIT.getDescription())){
@@ -122,9 +111,9 @@ public class TransactionManager {
             TransferToOrFromType sign = trn.getTransferToOrFrom() == TransferToOrFromType.FROM ? TransferToOrFromType.FROM : TransferToOrFromType.TO;
 
             if(TransferToOrFromType.FROM == sign){
-                tempStr = transferNegSigned.formatted(trn.getTransactionId(), trn.getTimestamp(), trn.getType(), trn.getAmount(), trn.getBalanceAfter());
+                tempStr = negSigned.formatted(trn.getTransactionId(), trn.getTimestamp(), trn.getType(), trn.getAmount(), trn.getBalanceAfter());
             }else{
-                tempStr = transferPosSigned.formatted(trn.getTransactionId(), trn.getTimestamp(), trn.getType(), trn.getAmount(), trn.getBalanceAfter());
+                tempStr = posSigned.formatted(trn.getTransactionId(), trn.getTimestamp(), trn.getType(), trn.getAmount(), trn.getBalanceAfter());
             }
 
         }else{

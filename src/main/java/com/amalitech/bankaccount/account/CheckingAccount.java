@@ -2,7 +2,11 @@ package com.amalitech.bankaccount.account;
 
 import com.amalitech.bankaccount.customer.Customer;
 import com.amalitech.bankaccount.enums.AccountType;
+import com.amalitech.bankaccount.exceptions.InsufficientFundsException;
+import com.amalitech.bankaccount.exceptions.InvalidAmountException;
+import com.amalitech.bankaccount.exceptions.OverdraftExceededException;
 
+import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 
@@ -40,16 +44,17 @@ public class CheckingAccount extends Account{
     }
 
     @Override
-    public void withdrawal(double amount) throws IllegalArgumentException{
+    public void withdrawal(double amount) throws InvalidAmountException, OverdraftExceededException {
         if(amount <= 0){
-            throw new IllegalArgumentException("Amount must be greater than zero");
+            throw new InvalidAmountException("Amount must be greater than zero");
         }
 
         // apply monthly fess before withdrawal
         this.applyMonthlyFee();
 
         if((this.getAccountBalance() - amount) < -overdraftLimit){
-            throw new IllegalArgumentException("The transaction will exceed your overdraft limit of $" + overdraftLimit);
+            DecimalFormat df = new DecimalFormat("#,###.00");
+            throw new OverdraftExceededException("The transaction amount of $" + df.format(amount) + " will exceed your overdraft limit of $" + df.format(overdraftLimit) + ". Your current balance: " + this.getAccountBalance());
         }
 
         super.withdrawal(amount);

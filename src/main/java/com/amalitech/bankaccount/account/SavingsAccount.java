@@ -2,6 +2,8 @@ package com.amalitech.bankaccount.account;
 
 import com.amalitech.bankaccount.customer.Customer;
 import com.amalitech.bankaccount.enums.AccountType;
+import com.amalitech.bankaccount.exceptions.InsufficientFundsException;
+import com.amalitech.bankaccount.exceptions.InvalidAmountException;
 
 import java.text.DecimalFormat;
 
@@ -36,14 +38,14 @@ public class SavingsAccount extends Account{
     }
 
     @Override
-    public void withdrawal(double amount) throws IllegalArgumentException{
+    public void withdrawal(double amount) throws InvalidAmountException, InsufficientFundsException {
         if(amount <= 0){
-            throw new IllegalArgumentException("Amount must be greater than zero");
+            throw new InvalidAmountException("Amount must be greater than zero");
         }
 
         if((this.getAccountBalance() - amount) < 0 || (this.getAccountBalance() - amount) < minimumBalance){
             DecimalFormat df =  new DecimalFormat("#,###.00");
-            throw new IllegalArgumentException("❌ Transaction Failed: Insufficient funds. Current balance: $" + df.format(this.getAccountBalance()));
+            throw new InsufficientFundsException("❌ Transaction Failed: Insufficient funds. Current balance: $" + df.format(this.getAccountBalance()));
         }
 
         super.withdrawal(amount);

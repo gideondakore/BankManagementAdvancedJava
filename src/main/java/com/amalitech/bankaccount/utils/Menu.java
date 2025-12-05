@@ -7,6 +7,9 @@ import com.amalitech.bankaccount.enums.AccountType;
 import com.amalitech.bankaccount.enums.CustomerType;
 import com.amalitech.bankaccount.enums.TransactionType;
 import com.amalitech.bankaccount.enums.TransferToOrFromType;
+import com.amalitech.bankaccount.exceptions.InsufficientFundsException;
+import com.amalitech.bankaccount.exceptions.InvalidAmountException;
+import com.amalitech.bankaccount.exceptions.OverdraftExceededException;
 import com.amalitech.bankaccount.interfaces.Transactable;
 import com.amalitech.bankaccount.records.CustomerRecords;
 import com.amalitech.bankaccount.transaction.Transaction;
@@ -192,7 +195,7 @@ public class Menu implements Transactable {
                     done = this.processTransaction(transactionAmount, transactionType.getDescription());
 
                     IO.println("✔ Transaction completed successfully!");
-                }catch (IllegalArgumentException err){
+                }catch (InvalidAmountException | InsufficientFundsException | OverdraftExceededException err){
                     IO.println(err.getMessage());
                 }
             }
@@ -284,7 +287,7 @@ public class Menu implements Transactable {
 
 
     @Override
-    public boolean processTransaction(double transactionAmount, String transactionType) throws IllegalArgumentException{
+    public boolean processTransaction(double transactionAmount, String transactionType) throws InvalidAmountException, InsufficientFundsException, OverdraftExceededException {
         Transaction transaction;
         Transaction recipient;
         // Collect all the transactions specific to an account number

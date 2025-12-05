@@ -140,6 +140,10 @@ public abstract class Account implements DisplayAccountDetails {
      * @throws OverdraftExceededException
      */
     public void withdrawal(double amount) throws InvalidAmountException, InsufficientFundsException, OverdraftExceededException {
+        if(amount <= 0){
+            throw new InvalidAmountException("Amount must be greater than zero");
+        }
+
         this.balance -= amount;
     }
 

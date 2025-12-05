@@ -63,10 +63,6 @@ public class CheckingAccount extends Account{
 
     @Override
     public void withdrawal(double amount) throws InvalidAmountException, OverdraftExceededException {
-        if(amount <= 0){
-            throw new InvalidAmountException("Amount must be greater than zero");
-        }
-
         // apply monthly fess before withdrawal
         this.applyMonthlyFee();
 

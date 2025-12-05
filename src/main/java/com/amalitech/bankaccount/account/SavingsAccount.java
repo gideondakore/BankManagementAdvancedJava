@@ -16,14 +16,26 @@ public class SavingsAccount extends Account{
         this.setType(AccountType.SAVINGS);
     }
 
+    /**
+     *
+     * @return Returns calculated interest amount
+     */
     public double calculateInterest(){
         return this.getAccountBalance() * interestRate;
     }
 
+    /**
+     *
+     * @return Returns the constant interest rate value
+     */
     public double getInterestRate(){
         return interestRate;
     }
 
+    /**
+     *
+     * @return Returns minimum balance
+     */
     public double getMinimumBalance(){
         return minimumBalance;
     }

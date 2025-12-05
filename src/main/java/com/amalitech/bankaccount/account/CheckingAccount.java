@@ -12,7 +12,11 @@ public class CheckingAccount extends Account{
     private final LocalDate createdAt = LocalDate.now();
 
 
-    public  CheckingAccount(Customer customer){
+    /**
+     * Checking account class constructor method
+     * @param customer
+     */
+    public CheckingAccount(Customer customer){
         super(customer);
         overdraftLimit = 1000;
         monthlyFee = 10;
@@ -20,14 +24,26 @@ public class CheckingAccount extends Account{
 
     }
 
+    /**
+     * Overdraft limit is a constant
+     * @return Returns overdraft limit
+     */
     public double getOverdraftLimit() {
         return overdraftLimit;
     }
 
+    /**
+     *
+     * @return Returns monthly fee
+     */
     public double getMonthlyFee() {
         return monthlyFee;
     }
 
+    /**
+     *
+     * @return Returns the timestamp for the creation of the account
+     */
     public LocalDate getCreatedAt() {
         return createdAt;
     }
@@ -64,6 +80,7 @@ public class CheckingAccount extends Account{
             this.setAccountBalance(this.getAccountBalance() - monthlyFee);
         }
     }
+
 
 
 

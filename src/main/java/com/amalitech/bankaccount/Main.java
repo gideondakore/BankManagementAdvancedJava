@@ -5,13 +5,12 @@ import com.amalitech.bankaccount.customer.*;
 import com.amalitech.bankaccount.enums.AccountType;
 import com.amalitech.bankaccount.enums.CustomerType;
 import com.amalitech.bankaccount.enums.TransactionType;
+import com.amalitech.bankaccount.exceptions.InvalidAmountException;
 import com.amalitech.bankaccount.transaction.Transaction;
 import com.amalitech.bankaccount.utils.InputValidationHelper;
 import com.amalitech.bankaccount.utils.Menu;
 import com.amalitech.bankaccount.records.CustomerRecords;
 import com.amalitech.bankaccount.transaction.TransactionManager;
-
-
 
 public class Main {
 
@@ -70,7 +69,13 @@ public class Main {
 
         Account account = createAccountByType(customer, accountType);
 
-        account.deposit(initialDeposit);
+
+        try{
+            account.deposit(initialDeposit);
+        } catch (InvalidAmountException e) {
+            IO.println(e.getMessage());
+            return;
+        }
 
         // Add first deposit of account creation as a deposit transaction
         Transaction transaction = new Transaction(account.getAccountNumber(), initialDeposit, initialDeposit);
@@ -119,8 +124,9 @@ public class Main {
     }
 
     private static Account[] populateWithCustomAccount (TransactionManager transactionManager){
-        Transaction transaction;
+        try{
 
+        Transaction transaction;
         Account acc1 = new SavingsAccount(new PremiumCustomer("John Smith", 23, "+1-415-782-9364", "123 Main Street, United State")).deposit(5250);
         Account acc2 = new CheckingAccount(new PremiumCustomer("Sarah Johnson", 21, "+44-207-9463821", "45 Oak Ave., Apt. 2B, United Kingdom")).deposit(3450);
         Account acc3 = new SavingsAccount(new RegularCustomer("Michael Chen", 19, "+49-301-2345678", "12-34 Park Lane")).deposit(15750);
@@ -136,7 +142,17 @@ public class Main {
         }
 
         return accsArr;
-
+        }catch (InvalidAmountException e){
+            IO.println("Error: " + e.getMessage());
+            IO.println("""
+                        
+                        Note:
+                        Internal error occurred. Don't worry, everything is in control.
+                        The application will start correctly but without our internal mock data which does not affect it functionalities.
+                        
+                        """);
+        }
+        return new Account[0];
     }
 
     private static void manageAccount(){

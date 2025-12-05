@@ -68,17 +68,6 @@ public class SavingsAccount extends Account{
     }
 
     @Override
-    public Account deposit(double amount) throws IllegalArgumentException{
-        if(amount <= 0){
-            throw new IllegalArgumentException("Amount must be greater than zero");
-        }
-
-        super.deposit(amount);
-
-        return this;
-    }
-
-    @Override
     public void displayAccountDetails() {
         Customer customer = this.getCustomer();
                 IO.println("""

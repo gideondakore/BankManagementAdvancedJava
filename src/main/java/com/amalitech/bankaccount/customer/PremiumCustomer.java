@@ -6,21 +6,40 @@ public class PremiumCustomer extends Customer{
     private double minimumBalance = 10000;
     static final String CUSTOMER_TYPE = CustomerType.PREMIUM.getDescription();
 
+    /**
+     * Premium Customer constructor
+     * @param name
+     * @param age
+     * @param contact
+     * @param address
+     */
     public PremiumCustomer(String name, int age, String contact, String address){
         super(name, age, contact, address);
         this.setType(CustomerType.PREMIUM);
     }
 
-    //Getters
+
+    /**
+     *
+     * @return Minimum balance
+     */
     public double getMinimumBalance(){
         return minimumBalance;
     }
-    //Setters
+
+
+    /**
+     * For setting minimum balance
+     * @param minimumBalance
+     */
     public void setMinimumBalance(double minimumBalance) {
         this.minimumBalance = minimumBalance;
     }
 
-    //Other Methods
+    /**
+     *
+     * @return boolean indicating whether customer has waived fees
+     */
     public boolean hasWaivedFees(){
         return true;
     }

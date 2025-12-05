@@ -10,12 +10,22 @@ public class RegularCustomer extends Customer{
         CUSTOMER_TYPE = CustomerType.REGULAR.getDescription();
     }
 
+    /**
+     * Regular Customer constructor class
+     * @param name
+     * @param age
+     * @param contact
+     * @param address
+     */
     public RegularCustomer(String name, int age, String contact, String address){
         super(name, age, contact, address);
         this.setType(CustomerType.REGULAR);
     }
 
-    //Other Methods
+    /**
+     *
+     * @return boolean indicating whether customer has waived fees
+     */
     public boolean hasWaivedFees(){
         return true;
     }

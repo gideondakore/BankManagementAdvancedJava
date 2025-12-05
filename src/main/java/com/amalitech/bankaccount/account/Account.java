@@ -95,7 +95,7 @@ public abstract class Account implements DisplayAccountDetails {
 
     /**
      * Set account type
-     * accType can be Checking or Savinngs account and must a type of <b><u>AccountType</u></b>
+     * accType can be Checking or Savinngs account and must a type of <b><u>AccountType</u></b> enum
      * @param accType
      */
     public void setType(AccountType accType){
@@ -121,8 +121,10 @@ public abstract class Account implements DisplayAccountDetails {
      * @return
      * @throws IllegalArgumentException
      */
-    public Account deposit(double amount) throws IllegalArgumentException {
-
+    public Account deposit(double amount) throws InvalidAmountException {
+        if(amount <= 0){
+            throw new InvalidAmountException("Amount must be greater than zero");
+        }
           this.balance += amount;
 
           return this;

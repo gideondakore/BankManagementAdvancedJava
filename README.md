@@ -51,7 +51,7 @@ This repository represents Week 2 enhancements focusing on clean code practices,
 
 ```
 BankAccount/
-├── docs
+├── docs/
 │   └── documentation.docx            # Documentation for the project
 │   └── git-workflow.md               # Git workflow for the project
 ├── src/

@@ -133,7 +133,7 @@ public class Main {
         try{
 
         Transaction transaction;
-        Account acc1 = new SavingsAccount(new PremiumCustomer("John Smith", 23, "+44-207-9463821", "123 Main Street, United State")).deposit(5250);
+        Account acc1 = new SavingsAccount(new PremiumCustomer("John Smith", 23, "+1-555-7890", "123 Main Street, United State")).deposit(5250);
         Account acc2 = new CheckingAccount(new PremiumCustomer("Sarah Johnson", 21, "+44-207-9463821", "45 Oak Ave., Apt. 2B, United Kingdom")).deposit(3450);
         Account acc3 = new SavingsAccount(new RegularCustomer("Michael Chen", 19, "+49-301-2345678", "12-34 Park Lane")).deposit(15750);
         Account acc4 = new CheckingAccount(new RegularCustomer("Emily Brown", 22, "+33-142-869753", "12-34 Park Lane, Germany")).deposit(890);

@@ -1,7 +1,11 @@
 package com.amalitech.bankaccount.customer;
 
 import com.amalitech.bankaccount.enums.CustomerType;
+import com.amalitech.bankaccount.exceptions.InputMismatchException;
 import com.amalitech.bankaccount.interfaces.DisplayCustomerDetails;
+import com.amalitech.bankaccount.utils.AppConstants;
+
+import java.util.regex.Pattern;
 
 public abstract class Customer implements DisplayCustomerDetails {
     // instance variable
@@ -21,7 +25,8 @@ public abstract class Customer implements DisplayCustomerDetails {
      * @param contact
      * @param address
      */
-    protected Customer(String name, int age, String contact, String address){
+    protected Customer(String name, int age, String contact, String address) throws InputMismatchException {
+        this.validateInputs(name, age, contact, address);
         this.name = name;
         this.age = age;
         this.contact = contact;
@@ -135,6 +140,72 @@ public abstract class Customer implements DisplayCustomerDetails {
     @Override
     public String toString(){
         return this.customerId;
+    }
+
+    private void validateInputs(String name, int age, String contact, String address) throws InputMismatchException {
+        Pattern p = Pattern.compile(AppConstants.AGE_REGEX);
+
+        if(!name.matches(AppConstants.NAME_REGEX)){
+            throw new InputMismatchException("""
+                    Please provide valid name!
+                
+                    //Example Valid Names:
+                    "Gideon Dakore"   ✓
+                    "Mary Jane Smith" ✓
+                    "Susana-Lawrence Van Damme" ✓
+                    Herman Melville ✓
+                    "A. A. Milne" ✓
+                    "Abraham Van Helsing" ✓
+                    "Mathis d'Arias" ✓
+                    "Martin Luther King, Jr." ✓
+                    "Tony Montana Prez Rodriguez DeJesus del Rosario Mercedes Pilar Martínez Molina Baeza" ✓
+                    
+                    YOU PROVIDED THE NAME '%s' WHICH IS INVALID!
+                    """.formatted(name));
+        }
+
+        if(!p.matcher(String.valueOf(age)).matches()){
+            throw new InputMismatchException("""
+                    Please provide a valid age (1-120)!
+                    
+                    YOU PROVIDED THE AGE '%d' WHICH IS INVALID!
+                    """.formatted(age));
+        }
+
+        if(!contact.matches(AppConstants.PHONE_NUMBER_REGEX)){
+            throw new InputMismatchException(String.format("""
+                    Please provide valid phone number!
+                    
+                    ✅ Example Valid Numbers.
+                    +233-559-372538
+                    +1-415-7829364
+                    +44-203-92847125
+                    +91-222-4839201
+                    +234-803-729183746
+                    +81-120-583920
+                    +49-301-74829365
+                    +61-420-593847
+                    +33-501-748291
+                    +55-119-4829357201
+                    +27-101-69284735
+                    
+                    YOU PROVIDED THE PHONE NUMBER '%s' WHICH IS INVALID!
+                    """.formatted(contact)));
+        }
+
+        if(!address.matches(AppConstants.CONTACT_ADDRESS)){
+            throw new InputMismatchException("""
+                Please provide a valid address!
+                
+                // Examples that match:
+                // "123 Main Street"
+                // "45 Oak Ave., Apt. 2B"
+                // "12-34 Park Lane"
+                // "P.O. Box 456"
+                
+                YOU PROVIDED THE ADDRESS '%s' WHICH IS INVALID!
+                """.formatted(address));
+        }
     }
 }
 

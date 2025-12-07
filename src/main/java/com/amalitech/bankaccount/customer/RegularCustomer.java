@@ -2,6 +2,7 @@ package com.amalitech.bankaccount.customer;
 
 
 import com.amalitech.bankaccount.enums.CustomerType;
+import com.amalitech.bankaccount.exceptions.InputMismatchException;
 
 public class RegularCustomer extends Customer{
     static final String CUSTOMER_TYPE;
@@ -17,7 +18,7 @@ public class RegularCustomer extends Customer{
      * @param contact
      * @param address
      */
-    public RegularCustomer(String name, int age, String contact, String address){
+    public RegularCustomer(String name, int age, String contact, String address) throws InputMismatchException {
         super(name, age, contact, address);
         this.setType(CustomerType.REGULAR);
     }

@@ -1,6 +1,7 @@
 package com.amalitech.bankaccount.customer;
 
 import com.amalitech.bankaccount.enums.CustomerType;
+import com.amalitech.bankaccount.exceptions.InputMismatchException;
 
 public class PremiumCustomer extends Customer{
     private double minimumBalance = 10000;
@@ -13,7 +14,7 @@ public class PremiumCustomer extends Customer{
      * @param contact
      * @param address
      */
-    public PremiumCustomer(String name, int age, String contact, String address){
+    public PremiumCustomer(String name, int age, String contact, String address) throws InputMismatchException {
         super(name, age, contact, address);
         this.setType(CustomerType.PREMIUM);
     }

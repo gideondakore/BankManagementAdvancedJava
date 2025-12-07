@@ -46,7 +46,7 @@ public class Menu implements Transactable {
                 --------------------------------------------
                 |                                          |
                 
-                |     BANK ACCOUNT MANAGEMENT - MAIN MENU  |                                 |
+                |     BANK ACCOUNT MANAGEMENT SYSTEM       |
                 --------------------------------------------
                 --------------------------------------------
                 

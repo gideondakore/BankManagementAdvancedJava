@@ -5,6 +5,7 @@ import com.amalitech.bankaccount.customer.*;
 import com.amalitech.bankaccount.enums.AccountType;
 import com.amalitech.bankaccount.enums.CustomerType;
 import com.amalitech.bankaccount.enums.TransactionType;
+import com.amalitech.bankaccount.exceptions.InputMismatchException;
 import com.amalitech.bankaccount.exceptions.InvalidAmountException;
 import com.amalitech.bankaccount.transaction.Transaction;
 import com.amalitech.bankaccount.utils.InputValidationHelper;
@@ -27,7 +28,6 @@ public class Main {
 
 
     public static void main(String[] args) {
-
         while (true) {
 
             menu.intro();
@@ -59,6 +59,8 @@ public class Main {
     }
 
     private static void handleCreateAccount(Menu menu, AccountManager accountManager, TransactionManager transactionManager) {
+        try{
+
         CustomerRecords info = menu.createAccount();
         CustomerType customerType = menu.customerType();
         AccountType accountType = menu.accountType();
@@ -70,14 +72,6 @@ public class Main {
 
         Account account = createAccountByType(customer, accountType);
 
-
-        try{
-            account.deposit(initialDeposit);
-        } catch (InvalidAmountException e) {
-            IO.println(e.getMessage());
-            return;
-        }
-
         // Add first deposit of account creation as a deposit transaction
         Transaction transaction = new Transaction(account.getAccountNumber(), initialDeposit, initialDeposit);
         transaction.setType(TransactionType.DEPOSIT.getDescription());
@@ -87,12 +81,23 @@ public class Main {
         account.displayAccountDetails();
 
         accountManager.addAccount(account);
+
+        }catch (InputMismatchException e){
+           IO.println("Error occurred!");
+           IO.println(e.getMessage());
+        }catch (InvalidAmountException e) {
+            IO.println(e.getMessage());
+        }
     }
 
-    private static Customer createCustomer(CustomerRecords info, CustomerType type) {
-        return (type == CustomerType.REGULAR)
-                ? new RegularCustomer(info.name(), info.age(), info.contact(), info.address())
-                : new PremiumCustomer(info.name(), info.age(), info.contact(), info.address());
+    private static Customer createCustomer(CustomerRecords info, CustomerType type) throws InputMismatchException {
+        try {
+            return (type == CustomerType.REGULAR)
+                    ? new RegularCustomer(info.name(), info.age(), info.contact(), info.address())
+                    : new PremiumCustomer(info.name(), info.age(), info.contact(), info.address());
+        } catch (InputMismatchException e) {
+            throw new InputMismatchException(e.getMessage());
+        }
     }
 
     private static double getMinimumBalance(CustomerType cType, AccountType aType) {
@@ -128,7 +133,7 @@ public class Main {
         try{
 
         Transaction transaction;
-        Account acc1 = new SavingsAccount(new PremiumCustomer("John Smith", 23, "+1-415-782-9364", "123 Main Street, United State")).deposit(5250);
+        Account acc1 = new SavingsAccount(new PremiumCustomer("John Smith", 23, "+1-41-782-9364", "123 Main Street, United State")).deposit(5250);
         Account acc2 = new CheckingAccount(new PremiumCustomer("Sarah Johnson", 21, "+44-207-9463821", "45 Oak Ave., Apt. 2B, United Kingdom")).deposit(3450);
         Account acc3 = new SavingsAccount(new RegularCustomer("Michael Chen", 19, "+49-301-2345678", "12-34 Park Lane")).deposit(15750);
         Account acc4 = new CheckingAccount(new RegularCustomer("Emily Brown", 22, "+33-142-869753", "12-34 Park Lane, Germany")).deposit(890);
@@ -143,7 +148,16 @@ public class Main {
         }
 
         return accsArr;
-        }catch (InvalidAmountException e){
+        } catch (InputMismatchException e){
+            IO.println(e.getMessage());
+            IO.println("""
+                        
+                        Note:
+                        Internal error occurred. Don't worry, everything is in control.
+                        The application will start correctly but without our internal mock data which does not affect it functionalities.
+                        
+                        """);
+        } catch (InvalidAmountException e){
             IO.println("Error: " + e.getMessage());
             IO.println("""
                         
@@ -188,7 +202,4 @@ public class Main {
             default -> IO.println("Oops! Wrong input choice selected");
         }
     }
-
-
-
 }

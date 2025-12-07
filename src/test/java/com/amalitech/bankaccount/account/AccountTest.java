@@ -2,6 +2,7 @@ package com.amalitech.bankaccount.account;
 
 import com.amalitech.bankaccount.customer.Customer;
 import com.amalitech.bankaccount.customer.RegularCustomer;
+import com.amalitech.bankaccount.exceptions.InputMismatchException;
 import com.amalitech.bankaccount.exceptions.InsufficientFundsException;
 import com.amalitech.bankaccount.exceptions.InvalidAmountException;
 import org.junit.jupiter.api.AfterEach;
@@ -15,7 +16,13 @@ class AccountTest {
     private Customer customer;
     @BeforeEach
     void setUp() {
-        customer  = new RegularCustomer("Gideon", 23, "+233-559-372538", "Bomso, Kumasi");
+        try{
+            customer  = new RegularCustomer("Gideon", 23, "+233-559-372538", "Bomso, Kumasi");
+
+        }catch(InputMismatchException e){
+            IO.println("Error occured in the Test class");
+            IO.println(e.getMessage());
+        }
     }
 
     @AfterEach

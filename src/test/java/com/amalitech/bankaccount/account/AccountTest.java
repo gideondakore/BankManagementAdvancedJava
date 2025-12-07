@@ -20,7 +20,7 @@ class AccountTest {
             customer  = new RegularCustomer("Gideon", 23, "+233-559-372538", "Bomso, Kumasi");
 
         }catch(InputMismatchException e){
-            IO.println("Error occured in the Test class");
+            IO.println("Error occurred in the Test class");
             IO.println(e.getMessage());
         }
     }

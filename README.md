@@ -60,12 +60,12 @@ BankAccount/
 │               ├── account/          # Classes representing account types and data structures
 │               ├── customer/         # Classes representing customers types and data structures
 │               ├── enums/            # Enums for serving as a helpers for data types
-│               ├── helpers/          # Helper utilities (validation, formatting, etc.)
+│               ├── utils/            # Helper utilities (validation, formatting, printables, etc.)
 │               ├── interfaces/       # Interface class for implementing abstraction
-│               ├── menu/             # Printable methods for displaying various functionality
 │               ├── records/          # Records for collecting and transferring data among classes
 │               ├── transaction/      # Transaction classes
 │               └── Main.java         # Application entry point with console menu
+│               └── TestRunner        # Test Runners
 ├── test/                             # JUnit test classes (e.g., AccountTest.java, TransactionManagerTest.java)
 ├── .git/                             # Git repository files
 ├── LICENSE                           # MIT license
@@ -114,13 +114,14 @@ When the application starts, you will see a menu such as:
 ```
 --------------------------------------------
 |                                          |
-|   BANK ACCOUNT MANAGEMENT - MAIN MENU    |
+|   BANK ACCOUNT MANAGEMENT SYSTEM         |
 |                                          |
 --------------------------------------------
-1. Create Account
-2. View Account
-3. Process Transaction
-4. View Transaction History
+
+1. Manage Accounts
+2. Perform Transactions
+3. Generate Account Statement
+4. Run Tests
 5. Exit
 ```
 

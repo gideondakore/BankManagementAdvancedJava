@@ -67,7 +67,7 @@ public class CustomTestRunner {
         IO.println("==================================\n");
 
         // Print failures if any
-        if (summary.getFailures().size() > 0) {
+        if (!summary.getFailures().isEmpty()) {
             IO.println("Failed tests:");
             summary.getFailures().forEach(failure -> {
                 IO.println("  - " + failure.getTestIdentifier().getDisplayName());

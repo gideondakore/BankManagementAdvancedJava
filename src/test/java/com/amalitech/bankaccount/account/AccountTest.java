@@ -17,7 +17,7 @@ class AccountTest {
     @BeforeEach
     void setUp() {
         try{
-            customer  = new RegularCustomer("Gideon", 23, "+233-559-372538", "Bomso, Kumasi");
+            customer  = new RegularCustomer("Gideon Dakore", 23, "+233-559-372538", "Bomso, Kumasi");
 
         }catch(InputMismatchException e){
             IO.println("Error occurred in the Test class");
@@ -27,7 +27,7 @@ class AccountTest {
 
     @AfterEach
     void tearDown() {
-        IO.println("Finish test...");
+        IO.println("====================================================================");
     }
 
     @Test

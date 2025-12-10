@@ -50,7 +50,7 @@ public class Main {
                 case 1 -> manageAccount();
                 case 2 -> Main.performTransaction();
                 case 3 -> menu.accountStatement(accountManager.getAccounts(), transactionManager);
-                case 4 -> CustomTestRunner.runAllTestsInPackage();
+                case 4 -> CustomTestRunnerv2.runAllTests();
                 default -> IO.println("Oops! Incorrect choice,please try again.");
             }
 

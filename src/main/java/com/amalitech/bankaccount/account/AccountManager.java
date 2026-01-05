@@ -1,14 +1,21 @@
 package com.amalitech.bankaccount.account;
 
+import com.amalitech.bankaccount.utils.IO;
+
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Account manager for managing account creation during program running in memory
+ * Uses HashMap for O(1) account lookups by account number
  */
 public class AccountManager {
     private final ArrayList<Account> accounts = new ArrayList<>(50);
+    private final Map<String, Account> accountMap = new HashMap<>();
     private int accountCount;
 
     /**
@@ -24,6 +31,7 @@ public class AccountManager {
      */
     public AccountManager(Account account){
         this.accounts.add(account);
+        this.accountMap.put(account.getAccountNumber(), account);
         this.accountCount = this.accounts.size();
     }
 
@@ -33,6 +41,10 @@ public class AccountManager {
      */
     public AccountManager(Account[] accArr){
         Collections.addAll(accounts, accArr);
+        // Populate HashMap for O(1) lookups
+        for (Account acc : accArr) {
+            accountMap.put(acc.getAccountNumber(), acc);
+        }
         this.accountCount = this.accounts.size();
     }
 
@@ -42,24 +54,22 @@ public class AccountManager {
      */
     public void addAccount(Account acc){
         this.accounts.add(acc);
+        this.accountMap.put(acc.getAccountNumber(), acc);
         this.accountCount++;
     }
 
     /**
-     * For finding account
+     * For finding account using O(1) HashMap lookup
      * @param accNumber
-     * @return
+     * @return Account if found, null otherwise
      */
     public Account findAccount(String accNumber){
-        for(Account acc: this.accounts){
-            if(acc.getAccountNumber().equals(accNumber)) return acc;
-        }
-
-        return null;
+        return accountMap.get(accNumber);
     }
 
     /**
      * For viewing all accounts in the Account Manager
+     * Uses Streams for processing
      */
     public void viewAllAccounts(){
         if(this.accounts.isEmpty()){
@@ -70,9 +80,6 @@ public class AccountManager {
                     """);
             return;
         }
-
-        int numAccounts = 0;
-        double totalBalance = 0.0;
 
         String line = "---------------------------------------------------------------------------------------------------------------------------";
 
@@ -86,17 +93,19 @@ public class AccountManager {
 
         stringBuilder.append(heading);
 
+        // Use Stream to process accounts
+        accounts.forEach(acc -> 
+            stringBuilder.append(acc.viewAllAccounts(acc.getAccountCustomer()))
+                        .append("\n")
+                        .append(line)
+                        .append("\n")
+        );
 
-
-
-        for(Account acc: this.accounts){
-
-            stringBuilder.append(acc.viewAllAccounts(acc.getAccountCustomer())).append("\n").append(line).append("\n");
-            totalBalance += acc.getAccountBalance();
-
-            numAccounts++;
-
-        }
+        // Calculate totals using Streams
+        int numAccounts = accounts.size();
+        double totalBalance = accounts.stream()
+            .mapToDouble(Account::getAccountBalance)
+            .sum();
 
         IO.println(stringBuilder.toString());
         IO.println("Total Account: " + numAccounts);
@@ -105,17 +114,12 @@ public class AccountManager {
 
     /**
      *
-     * @return Get total account balance in the Account Manager
+     * @return Get total account balance in the Account Manager using Stream reduction
      */
     public double getTotalBalance(){
-        double tempTotal = 0.0;
-
-        for(Account acc: accounts){
-            tempTotal += acc.getAccountBalance();
-        }
-
-        return tempTotal;
-
+        return accounts.stream()
+            .mapToDouble(Account::getAccountBalance)
+            .sum();
     }
 
     /**
@@ -135,51 +139,35 @@ public class AccountManager {
     }
 
     /**
-     * Custom override implementation of the String method
+     * Custom override implementation of the String method using Streams
      * @return Strings of account number formatted as an array
      */
     @Override
     public String toString(){
-        StringBuilder str = new StringBuilder();
-
-        str.append("[ ");
-        for(int i = 0; i < this.accounts.size(); i++){
-
-            if (i < (this.accounts.size() - 1)) {
-                str.append(this.accounts.get(i).getAccountNumber()).append(", ");
-            } else {
-                str.append(this.accounts.get(i).getAccountNumber());
-            }
-        }
-        str.append(" ]");
-
-        return str.toString();
+        return accounts.stream()
+            .map(Account::getAccountNumber)
+            .collect(Collectors.joining(", ", "[ ", " ]"));
     }
 
 
     /**
-     * For getting specific account from the List of Accounts
+     * For getting specific account from the List of Accounts using O(1) lookup
      * @param account
      * @param accNum
      * @return
      */
     public static Account getAccountForTransaction(List<Account> account, String accNum){
-        Account selectedAcc = null;
-
-        for(Account acc: account){
-            if(acc.getAccountNumber().equals(accNum)){
-                selectedAcc = acc;
-                break;
-            }
-        }
+        // Use Stream to find account
+        Account selectedAcc = account.stream()
+            .filter(acc -> acc.getAccountNumber().equals(accNum))
+            .findFirst()
+            .orElse(null);
 
         if(selectedAcc == null){
-
-            IO.println("❌ Error: Account" + "'" + accNum + "'" + " not found. Please check the account number and try again.");
+            IO.println("❌ Error: Account '" + accNum + "' not found. Please check the account number and try again.");
             return null;
         }
 
         return selectedAcc;
-
     }
 }

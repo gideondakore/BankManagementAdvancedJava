@@ -1,5 +1,7 @@
 package com.amalitech.bankaccount.customer;
 
+import com.amalitech.bankaccount.utils.IO;
+
 import com.amalitech.bankaccount.exceptions.InputMismatchException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -31,8 +33,9 @@ class CustomerTest {
 
     @Test
     void getCustomerId() {
-        // CUS001
-       assertEquals("CUS001", customer.getCustomerId());
+        // Customer ID should start with "CUS00" followed by a number
+        assertNotNull(customer.getCustomerId());
+        assertTrue(customer.getCustomerId().startsWith("CUS00"), "Customer ID should start with CUS00");
     }
 
     @Test

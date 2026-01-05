@@ -1,5 +1,7 @@
 package com.amalitech.bankaccount.account;
 
+import com.amalitech.bankaccount.utils.IO;
+
 import com.amalitech.bankaccount.customer.Customer;
 import com.amalitech.bankaccount.enums.AccountType;
 import com.amalitech.bankaccount.exceptions.InvalidAmountException;
@@ -62,7 +64,7 @@ public class CheckingAccount extends Account{
     }
 
     @Override
-    public void withdrawal(double amount) throws InvalidAmountException, OverdraftExceededException {
+    public synchronized void withdrawal(double amount) throws InvalidAmountException, OverdraftExceededException {
         // apply monthly fess before withdrawal
         this.applyMonthlyFee();
 

@@ -116,34 +116,30 @@ public abstract class Account implements DisplayAccountDetails {
     // Regular methods
 
     /**
-     * Method for depositing from account
+     * Method for depositing to account (thread-safe)
      * @param amount
-     * @return
-     * @throws IllegalArgumentException
+     * @return this Account for method chaining
+     * @throws InvalidAmountException if amount is not greater than zero
      */
-    public Account deposit(double amount) throws InvalidAmountException {
+    public synchronized Account deposit(double amount) throws InvalidAmountException {
         if(amount <= 0){
             throw new InvalidAmountException("Amount must be greater than zero");
         }
-          this.balance += amount;
-
-          return this;
-      }
-
-
+        this.balance += amount;
+        return this;
+    }
 
     /**
-     * Method for withdrawing from account
+     * Method for withdrawing from account (thread-safe)
      * @param amount
      * @throws InvalidAmountException
      * @throws InsufficientFundsException
      * @throws OverdraftExceededException
      */
-    public void withdrawal(double amount) throws InvalidAmountException, InsufficientFundsException, OverdraftExceededException {
+    public synchronized void withdrawal(double amount) throws InvalidAmountException, InsufficientFundsException, OverdraftExceededException {
         if(amount <= 0){
             throw new InvalidAmountException("Amount must be greater than zero");
         }
-
         this.balance -= amount;
     }
 

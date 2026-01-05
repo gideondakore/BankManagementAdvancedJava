@@ -1,5 +1,7 @@
 package com.amalitech.bankaccount;
 
+import com.amalitech.bankaccount.utils.IO;
+
 import com.amalitech.bankaccount.account.*;
 import com.amalitech.bankaccount.customer.*;
 import com.amalitech.bankaccount.enums.AccountType;
@@ -7,11 +9,16 @@ import com.amalitech.bankaccount.enums.CustomerType;
 import com.amalitech.bankaccount.enums.TransactionType;
 import com.amalitech.bankaccount.exceptions.InputMismatchException;
 import com.amalitech.bankaccount.exceptions.InvalidAmountException;
+import com.amalitech.bankaccount.services.FilePersistenceService;
 import com.amalitech.bankaccount.transaction.Transaction;
+import com.amalitech.bankaccount.utils.ConcurrencyUtils;
+import com.amalitech.bankaccount.utils.FunctionalUtils;
 import com.amalitech.bankaccount.utils.InputValidationHelper;
 import com.amalitech.bankaccount.utils.Menu;
 import com.amalitech.bankaccount.records.CustomerRecords;
 import com.amalitech.bankaccount.transaction.TransactionManager;
+
+import java.util.List;
 
 
 public class Main {
@@ -21,10 +28,40 @@ public class Main {
     private static final String INITIAL_DEPOSIT_MSG = "Enter initial deposit amount: $";
     private static final String INITIAL_DEPOSIT_ERR_MSG = "Please provide a valid amount!";
 
+    static FilePersistenceService persistenceService = new FilePersistenceService();
     static TransactionManager transactionManager = new TransactionManager();
-    static Account[] mockAccounts = Main.populateWithCustomAccount(transactionManager);
-    static AccountManager accountManager = new AccountManager(mockAccounts);
+    static AccountManager accountManager;
     static Menu menu = new Menu();
+
+    static {
+        // Try to load data from files first, otherwise use mock data
+        initializeData();
+    }
+
+    private static void initializeData() {
+        if (persistenceService.dataFilesExist()) {
+            IO.println("\n--- Loading data from files ---");
+            List<Account> loadedAccounts = persistenceService.loadAccounts();
+            List<Transaction> loadedTransactions = persistenceService.loadTransactions();
+            
+            if (!loadedAccounts.isEmpty()) {
+                accountManager = new AccountManager(loadedAccounts.toArray(new Account[0]));
+                loadedTransactions.forEach(transactionManager::addTransaction);
+                IO.println("✓ Data loaded successfully from files.\n");
+            } else {
+                IO.println("ℹ No valid accounts found in files. Using mock data.\n");
+                initializeMockData();
+            }
+        } else {
+            IO.println("\n--- Initializing with mock data ---");
+            initializeMockData();
+        }
+    }
+
+    private static void initializeMockData() {
+        Account[] mockAccounts = populateWithCustomAccount(transactionManager);
+        accountManager = new AccountManager(mockAccounts);
+    }
 
 
     public static void main(String[] args) {
@@ -34,11 +71,13 @@ public class Main {
 
             int input = menu.getChoice();
 
-            if (input == 5) {
+            if (input == 8) {
+                // Save data before exiting
+                saveDataToFiles();
                 IO.println("""
                         
                         Thank you for using the Bank Management System!
-                        All data saved in memory. Remember to commit your lastest changes to Git!
+                        All data has been saved to files.
                         Goodbye!
                         """);
                 break;
@@ -50,7 +89,10 @@ public class Main {
                 case 1 -> manageAccount();
                 case 2 -> Main.performTransaction();
                 case 3 -> menu.accountStatement(accountManager.getAccounts(), transactionManager);
-                case 4 -> CustomTestRunner.runAllTestsInPackage();
+                case 4 -> runConcurrentSimulation();
+                case 5 -> saveDataToFiles();
+                case 6 -> displayStatistics();
+                case 7 -> CustomTestRunner.runAllTestsInPackage();
                 default -> IO.println("Oops! Incorrect choice,please try again.");
             }
 
@@ -202,4 +244,60 @@ public class Main {
             default -> IO.println("Oops! Wrong input choice selected");
         }
     }
+
+    private static void runConcurrentSimulation() {
+        IO.println("""
+                
+                CONCURRENT TRANSACTION SIMULATION
+                ----------------------------------
+                This will run multiple threads performing random deposits and withdrawals.
+                """);
+        
+        int numThreads = InputValidationHelper.validatedIntInputValueWithRange(
+            3, 10, 
+            "Enter number of threads (3-10): ", 
+            "Please enter a number between 3 and 10"
+        );
+        
+        ConcurrencyUtils.runConcurrentSimulation(
+            accountManager.getAccounts(), 
+            transactionManager, 
+            numThreads
+        );
+    }
+
+    private static void saveDataToFiles() {
+        IO.println("\n--- Saving data to files ---");
+        persistenceService.saveAll(
+            accountManager.getAccounts(), 
+            transactionManager.getTransactions()
+        );
+    }
+
+    private static void displayStatistics() {
+        IO.println("""
+                
+                STATISTICS MENU
+                ---------------
+                1. Account Summary
+                2. Transaction Summary
+                3. Both
+                """);
+        
+        int choice = InputValidationHelper.validatedIntInputValueWithRange(
+            1, 3, 
+            "Select option: ", 
+            "Please enter 1, 2, or 3"
+        );
+        
+        switch (choice) {
+            case 1 -> FunctionalUtils.printAccountSummary(accountManager.getAccounts());
+            case 2 -> FunctionalUtils.printTransactionSummary(transactionManager.getTransactions());
+            case 3 -> {
+                FunctionalUtils.printAccountSummary(accountManager.getAccounts());
+                FunctionalUtils.printTransactionSummary(transactionManager.getTransactions());
+            }
+        }
+    }
 }
+

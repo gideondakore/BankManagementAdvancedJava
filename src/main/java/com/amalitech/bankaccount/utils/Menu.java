@@ -53,18 +53,21 @@ public class Menu implements Transactable {
                 1. Manage Account
                 2. Perform Transaction
                 3. Generate Account Statement
-                4. Run Tests
-                5. Exit
+                4. Run Concurrent Simulation
+                5. Save Data to Files
+                6. View Statistics
+                7. Run Tests
+                8. Exit
                 """;
 
         IO.println(introFormattedStr);
 
         while (true){
             try{
-               this.choice = receiveChoice(1, 5);
+               this.choice = receiveChoice(1, 8);
                 break;
-            }catch (InputMismatchException _){
-                IO.println("Please provide a valid input. Input must be only numbers from 1-5");
+            }catch (InputMismatchException e){
+                IO.println("Please provide a valid input. Input must be only numbers from 1-8");
             }
 
         }
@@ -81,10 +84,9 @@ public class Menu implements Transactable {
 
     private static int receiveChoice(int lowerBound, int upperBound) throws InputMismatchException {
         int input;
-        try (Scanner scanner = new Scanner(System.in)) {
-            IO.print("Enter choice: ");
-            input = scanner.nextInt();
-        }
+        Scanner scanner = new Scanner(System.in);
+        IO.print("Enter choice: ");
+        input = scanner.nextInt();
 
         if(input > upperBound || input < lowerBound) {
             throw new InputMismatchException();
@@ -275,15 +277,9 @@ public class Menu implements Transactable {
     }
 
     public void pressEnterToContinue(){
-            try (Scanner scanner = new Scanner(System.in)) {
-                IO.println("\nPress enter to continue...");
-
-                if(scanner.hasNextLine()){
-                    scanner.nextLine();
-                }
-
-                scanner.nextLine();
-            }
+        Scanner scanner = new Scanner(System.in);
+        IO.println("\nPress enter to continue...");
+        scanner.nextLine();
     }
 
 
@@ -309,21 +305,22 @@ public class Menu implements Transactable {
                 this.recipientAccount.deposit(transactionAmount);
                 recipient = new Transaction(this.recipientAccount.getAccountNumber(), transactionAmount, this.recipientAccount.getAccountBalance());
                 recipient.setType(TransactionType.TRANSFER.getDescription());
+                recipient.setTransferToOrFrom(TransferToOrFromType.TO);
                 recipient.generateTransactionId(userRecipientTransactions.size() + 1);
                 this.transactionManager.addTransaction(recipient);
-                recipient.setTransferToOrFrom(TransferToOrFromType.TO);
             }
         }
 
         transaction = new Transaction(this.accountSelectedForTransaction.getAccountNumber(), transactionAmount, this.accountSelectedForTransaction.getAccountBalance());
 
         transaction.setType(transactionType);
-        transaction.generateTransactionId(userPerformingOperationTransactions.size() + 1);
-        this.transactionManager.addTransaction(transaction);
-
+        
         if(transactionType.equals(TransactionType.TRANSFER.getDescription())){
             transaction.setTransferToOrFrom(TransferToOrFromType.FROM);
         }
+        
+        transaction.generateTransactionId(userPerformingOperationTransactions.size() + 1);
+        this.transactionManager.addTransaction(transaction);
 
         return true;
     }
@@ -421,11 +418,14 @@ public class Menu implements Transactable {
     public String toString(){
 
         return switch (choice) {
-            case 1 -> "1. Create Account";
-            case 2 -> "2. View Account";
-            case 3 -> "3. Process Transaction";
-            case 4 -> "4. View Transaction History";
-            case 5 -> "5. Exit";
+            case 1 -> "1. Manage Account";
+            case 2 -> "2. Perform Transaction";
+            case 3 -> "3. Generate Account Statement";
+            case 4 -> "4. Run Concurrent Simulation";
+            case 5 -> "5. Save Data to Files";
+            case 6 -> "6. View Statistics";
+            case 7 -> "7. Run Tests";
+            case 8 -> "8. Exit";
             default -> "No menu selected";
         };
     }

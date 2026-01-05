@@ -1,5 +1,7 @@
 package com.amalitech.bankaccount.account;
 
+import com.amalitech.bankaccount.utils.IO;
+
 import com.amalitech.bankaccount.customer.Customer;
 import com.amalitech.bankaccount.enums.AccountType;
 import com.amalitech.bankaccount.exceptions.InsufficientFundsException;
@@ -57,7 +59,7 @@ public class SavingsAccount extends Account{
     }
 
     @Override
-    public void withdrawal(double amount) throws InvalidAmountException, InsufficientFundsException {
+    public synchronized void withdrawal(double amount) throws InvalidAmountException, InsufficientFundsException {
 
         if(amount <= 0){
             throw new InvalidAmountException("Amount must be greater than zero");

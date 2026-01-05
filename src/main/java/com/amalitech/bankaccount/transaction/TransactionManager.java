@@ -36,7 +36,14 @@ public class TransactionManager {
         List<Transaction> newTransactions = getAllTransactions(accNumber, transactionManager.getTransactions());
 
         String txnID = String.valueOf(newTransactions.size() + 1);
-        double newBalance = transactionType == TransactionType.DEPOSIT ? account.getAccountBalance() + transactionAmount : account.getAccountBalance() - transactionAmount;
+        // Calculate new balance: deposits add, withdrawals and transfers subtract
+        double newBalance;
+        if (transactionType == TransactionType.DEPOSIT) {
+            newBalance = account.getAccountBalance() + transactionAmount;
+        } else {
+            // Both WITHDRAWAL and TRANSFER subtract from the sender's account
+            newBalance = account.getAccountBalance() - transactionAmount;
+        }
 
         IO.println("""
                 

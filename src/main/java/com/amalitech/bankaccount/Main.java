@@ -114,8 +114,11 @@ public class Main {
 
         Account account = createAccountByType(customer, accountType);
 
+        // Actually deposit the initial amount into the account
+        account.deposit(initialDeposit);
+
         // Add first deposit of account creation as a deposit transaction
-        Transaction transaction = new Transaction(account.getAccountNumber(), initialDeposit, initialDeposit);
+        Transaction transaction = new Transaction(account.getAccountNumber(), initialDeposit, account.getAccountBalance());
         transaction.setType(TransactionType.DEPOSIT.getDescription());
 
         transactionManager.addTransaction(transaction);

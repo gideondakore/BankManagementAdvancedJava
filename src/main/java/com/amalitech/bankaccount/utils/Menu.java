@@ -81,9 +81,10 @@ public class Menu implements Transactable {
 
     private static int receiveChoice(int lowerBound, int upperBound) throws InputMismatchException {
         int input;
-        Scanner scanner = new Scanner(System.in);
-        IO.print("Enter choice: ");
-        input = scanner.nextInt();
+        try (Scanner scanner = new Scanner(System.in)) {
+            IO.print("Enter choice: ");
+            input = scanner.nextInt();
+        }
 
         if(input > upperBound || input < lowerBound) {
             throw new InputMismatchException();
@@ -274,14 +275,15 @@ public class Menu implements Transactable {
     }
 
     public void pressEnterToContinue(){
-            Scanner scanner = new Scanner(System.in);
-            IO.println("\nPress enter to continue...");
+            try (Scanner scanner = new Scanner(System.in)) {
+                IO.println("\nPress enter to continue...");
 
-            if(scanner.hasNextLine()){
+                if(scanner.hasNextLine()){
+                    scanner.nextLine();
+                }
+
                 scanner.nextLine();
             }
-
-            scanner.nextLine();
     }
 
 

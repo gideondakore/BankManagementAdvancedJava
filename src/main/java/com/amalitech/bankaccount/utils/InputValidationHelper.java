@@ -4,9 +4,9 @@ import java.util.Scanner;
 import java.util.regex.Pattern;
 
 public record InputValidationHelper() {
+    private static final Scanner scanner = new Scanner(System.in);
 
     public static String validatedStringInputValue(String msg, String errMsg, String regex) {
-        Scanner scanner = new Scanner(System.in);
         String input;
 
         Pattern pattern = Pattern.compile(regex);
@@ -26,7 +26,6 @@ public record InputValidationHelper() {
 
 
     public static int validatedIntInputValue(String msg, String errMsg, String regex) {
-        Scanner scanner = new Scanner(System.in);
         int input;
 
         Pattern pattern = Pattern.compile(regex);
@@ -49,7 +48,6 @@ public record InputValidationHelper() {
 
 
     public static double validatedDoubleInputValue(String msg, String errMsg, String regex) {
-        Scanner scanner = new Scanner(System.in);
         double input;
 
         Pattern pattern = Pattern.compile(regex);
@@ -68,7 +66,6 @@ public record InputValidationHelper() {
     }
 
     public static char validatedCharInputValue(String msg, String errMsg, String regex) {
-        Scanner scanner = new Scanner(System.in);
         char input;
 
         Pattern pattern = Pattern.compile(regex);
@@ -87,7 +84,6 @@ public record InputValidationHelper() {
     }
 
     public static int validatedIntInputValueWithRange(int lowerBound, int upperBound, String msg, String errMsg) {
-        Scanner scanner = new Scanner(System.in);
         int input;
 
         while (true) {
@@ -113,7 +109,6 @@ public record InputValidationHelper() {
     }
 
     public static int validatedIntInputPositiveValue(String msg, String errMsg) {
-        Scanner scanner = new Scanner(System.in);
         int input;
 
         while (true) {
@@ -139,7 +134,6 @@ public record InputValidationHelper() {
     }
 
     public static double validatedDoubleInputPositiveValue(String msg, String errMsg) {
-        Scanner scanner = new Scanner(System.in);
         double input;
 
         while (true) {

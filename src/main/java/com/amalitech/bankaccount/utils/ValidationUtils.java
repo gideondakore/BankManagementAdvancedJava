@@ -1,5 +1,6 @@
 package com.amalitech.bankaccount.utils;
 
+import java.util.function.DoublePredicate;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
 
@@ -45,11 +46,10 @@ public class ValidationUtils {
     public static final Predicate<String> isValidAddress = 
         input -> input != null && addressPattern.matcher(input).matches();
     
-    public static final Predicate<Double> isPositiveAmount = 
-        amount -> amount != null && amount > 0;
+    public static final DoublePredicate isPositiveAmount =
+        amount -> amount > 0;
     
-    public static final Predicate<Double> isNonNegativeAmount = 
-        amount -> amount != null && amount >= 0;
+    public static final DoublePredicate isNonPositiveAmount = isPositiveAmount.negate();
     
     /**
      * Validates an account number

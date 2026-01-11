@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
  * Uses HashMap for O(1) account lookups by account number
  */
 public class AccountManager {
-    private final ArrayList<Account> accounts = new ArrayList<>(50);
+//    private final ArrayList<Account> accounts = new ArrayList<>(50);
     private final Map<String, Account> accountMap = new HashMap<>();
     private int accountCount;
 
@@ -30,9 +30,10 @@ public class AccountManager {
      * @param account
      */
     public AccountManager(Account account){
-        this.accounts.add(account);
+//        this.accounts.add(account);
         this.accountMap.put(account.getAccountNumber(), account);
-        this.accountCount = this.accounts.size();
+//        this.accountCount = this.accounts.size();
+        this.accountCount = this.accountMap.size();
     }
 
     /**
@@ -40,12 +41,12 @@ public class AccountManager {
      * @param accArr
      */
     public AccountManager(Account[] accArr){
-        Collections.addAll(accounts, accArr);
+//        Collections.addAll(accounts, accArr);
         // Populate HashMap for O(1) lookups
         for (Account acc : accArr) {
             accountMap.put(acc.getAccountNumber(), acc);
         }
-        this.accountCount = this.accounts.size();
+        this.accountCount = this.accountMap.size();
     }
 
     /**
@@ -53,7 +54,7 @@ public class AccountManager {
      * @param acc
      */
     public void addAccount(Account acc){
-        this.accounts.add(acc);
+//        this.accounts.add(acc);
         this.accountMap.put(acc.getAccountNumber(), acc);
         this.accountCount++;
     }
@@ -72,7 +73,7 @@ public class AccountManager {
      * Uses Streams for processing
      */
     public void viewAllAccounts(){
-        if(this.accounts.isEmpty()){
+        if(this.accountMap.isEmpty()){
             IO.println("""
                     -------------------------------------------
                     No account account created yet.
@@ -94,7 +95,7 @@ public class AccountManager {
         stringBuilder.append(heading);
 
         // Use Stream to process accounts
-        accounts.forEach(acc -> 
+        accountMap.forEach((key,acc) ->
             stringBuilder.append(acc.viewAllAccounts(acc.getAccountCustomer()))
                         .append("\n")
                         .append(line)
@@ -102,8 +103,8 @@ public class AccountManager {
         );
 
         // Calculate totals using Streams
-        int numAccounts = accounts.size();
-        double totalBalance = accounts.stream()
+        int numAccounts = accountMap.size();
+        double totalBalance = accountMap.values().stream()
             .mapToDouble(Account::getAccountBalance)
             .sum();
 
@@ -117,7 +118,7 @@ public class AccountManager {
      * @return Get total account balance in the Account Manager using Stream reduction
      */
     public double getTotalBalance(){
-        return accounts.stream()
+        return accountMap.values().stream()
             .mapToDouble(Account::getAccountBalance)
             .sum();
     }
@@ -135,7 +136,7 @@ public class AccountManager {
      * @return List of all Accounts
      */
     public List<Account> getAccounts() {
-        return accounts;
+        return this.accountMap.values().stream().toList();
     }
 
     /**
@@ -144,7 +145,7 @@ public class AccountManager {
      */
     @Override
     public String toString(){
-        return accounts.stream()
+        return accountMap.values().stream()
             .map(Account::getAccountNumber)
             .collect(Collectors.joining(", ", "[ ", " ]"));
     }

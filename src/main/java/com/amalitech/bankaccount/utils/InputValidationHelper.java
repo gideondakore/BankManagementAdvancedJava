@@ -157,4 +157,97 @@ public record InputValidationHelper() {
 
         return input;
     }
+
+    public static String validatedName(String msg, String errMsg){
+        String input;
+
+        while (true) {
+            IO.print(msg);
+            String line = scanner.nextLine();
+            if (ValidationUtils.validateName(line)) {
+                input = line;
+                break;
+            } else {
+                IO.println(errMsg);
+            }
+        }
+
+        return input;
+
+    }
+
+    public static int validatedAge(String msg, String errMsg){
+        int input;
+
+        while (true) {
+            IO.print(msg);
+
+            String line = scanner.nextLine();
+            if (ValidationUtils.validateAge(line)) {
+                input = Integer.parseInt(line);
+                break;
+            } else {
+                IO.println(errMsg);
+            }
+        }
+
+        return input;
+
+    }
+
+    public static String validatedPhone(String msg, String errMsg){
+        String input;
+
+        while (true) {
+            IO.print(msg);
+            String line = scanner.nextLine();
+            if (ValidationUtils.validatePhone(line)) {
+                input = line;
+                break;
+            } else {
+                IO.println(errMsg);
+            }
+        }
+
+        return input;
+
+    }
+
+    public static String validatedAddress(String msg, String errMsg){
+        String input;
+
+        while (true) {
+            IO.print(msg);
+            String line = scanner.nextLine();
+            if (ValidationUtils.validateAddress(line)) {
+                input = line;
+                break;
+            } else {
+                IO.println(errMsg);
+            }
+        }
+
+        return input;
+
+    }
+
+    public static String validatedEmail(String msg, String errMsg){
+        String input;
+
+        while (true) {
+            IO.print(msg);
+            String line = scanner.nextLine();
+            if (ValidationUtils.validateEmail(line)) {
+                input = line;
+                break;
+            } else {
+                IO.println(errMsg);
+            }
+        }
+
+        return input;
+
+    }
+
+
 }

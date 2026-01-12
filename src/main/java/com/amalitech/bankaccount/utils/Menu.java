@@ -104,8 +104,9 @@ public class Menu implements Transactable {
         int age;
         String contact;
         String address;
+        String email;
 
-        name = InputValidationHelper.validatedStringInputValue("Enter customer name: ", """
+        name = InputValidationHelper.validatedName("Enter customer name: ", """
                 Please provide valid name!
                 
                 //Example valid name:
@@ -118,10 +119,10 @@ public class Menu implements Transactable {
                 "Mathis d'Arias" ✓
                 "Martin Luther King, Jr." ✓
                 "Tony Montana Prez Rodriguez DeJesus del Rosario Mercedes Pilar Martínez Molina Baeza" ✓
-                """, "^[A-ZÀ-ÿ][-,a-z.' ]+( [A-ZÀ-ÿ][-,a-z.' ]+)+$");
-        age = InputValidationHelper.validatedIntInputValue("Enter customer age: ", "Please provide a valid age (1-120)!", "^(?:120|1[01][0-9]|[1-9][0-9]?)$");
-        contact = InputValidationHelper.validatedStringInputValue("Enter customer contact (+1-555-7890): ", "Please provide valid phone number!", "\\+\\d{1,3}-\\d{3}-\\d{4,12}");
-        address = InputValidationHelper.validatedStringInputValue("Enter customer address: ", """
+                """);
+        age = InputValidationHelper.validatedAge("Enter customer age: ", "Please provide a valid age (1-120)!");
+        contact = InputValidationHelper.validatedPhone("Enter customer contact (+1-555-7890): ", "Please provide valid phone number!");
+        address = InputValidationHelper.validatedAddress("Enter customer address: ", """
                 Please provide a valid address!
                 
                 // Examples that match:
@@ -129,9 +130,15 @@ public class Menu implements Transactable {
                 // "45 Oak Ave., Apt. 2B"
                 // "12-34 Park Lane"
                 // "P.O. Box 456"
-                """, "^[a-zA-Z0-9\\s,.'\\-#]{5,100}$");
+                """);
+        email = InputValidationHelper.validatedEmail("Enter customer email address: ", """
+                Please provide a valid email address!
+                
+                // Examples that match:
+                // johndoe@example.com
+                """);
 
-        return new CustomerRecords(name, age, contact, address);
+        return new CustomerRecords(name, age, contact, address, email);
     }
 
     public void performTransaction(List<Account> accounts, TransactionManager transactionManager){

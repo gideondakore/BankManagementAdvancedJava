@@ -53,9 +53,9 @@ public class SavingsAccount extends Account{
 
     public String viewAllAccounts(Customer customer){
         return """
-                %-8s            |  %-25s             |  %-8s           |  $%,-5.2f           |  %-5s
+                %-8s            |  %-25s             |  %-8s           |  $%,-5.2f           |  %-5s           |  %-5s
                 %-8s            | Interest Rate: %.1f%% %-18s |  Min Balance: $%.2f
-                """.formatted(this.getAccountNumber(), customer.getName(), this.getType().getDescription(), this.getAccountBalance(), this.getAccountStatus(), "", this.interestRate * 100, "", this.minimumBalance);
+                """.formatted(this.getAccountNumber(), customer.getName(), this.getType().getDescription(), this.getAccountBalance(), this.getAccountStatus(), customer.getEmail(), "", this.interestRate * 100, "", this.minimumBalance);
     }
 
     @Override

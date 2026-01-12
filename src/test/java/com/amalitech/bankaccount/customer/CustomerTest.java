@@ -19,8 +19,8 @@ class CustomerTest {
     @BeforeEach
     void setUp() {
         try {
-            regularCustomer = new RegularCustomer("Mark Anthony", 23, "+233-559-372538", "Bomso");
-            premiumCustomer = new PremiumCustomer("Jane Doe", 35, "+233-559-123456", "Accra, Ghana");
+            regularCustomer = new RegularCustomer("Mark Anthony", 23, "+233-559-372538", "Bomso", "mntony@gmaile.com");
+            premiumCustomer = new PremiumCustomer("Jane Doe", 35, "+233-559-123456", "Accra, Ghana", "jane@gmail.com");
         } catch (InputMismatchException e) {
             IO.println(e.getMessage());
         }
@@ -40,7 +40,7 @@ class CustomerTest {
         @Test
         @DisplayName("Should create regular customer with valid inputs")
         void createRegularCustomer() throws InputMismatchException {
-            Customer customer = new RegularCustomer("John Smith", 30, "+233-559-111222", "Kumasi, Ghana");
+            Customer customer = new RegularCustomer("John Smith", 30, "+233-559-111222", "Kumasi, Ghana", "doe@example.com");
             
             assertNotNull(customer);
             assertEquals("John Smith", customer.getName());
@@ -79,7 +79,7 @@ class CustomerTest {
         @Test
         @DisplayName("Should create premium customer with valid inputs")
         void createPremiumCustomer() throws InputMismatchException {
-            PremiumCustomer customer = new PremiumCustomer("Alice Wonder", 45, "+233-559-999888", "Lagos, Nigeria");
+            PremiumCustomer customer = new PremiumCustomer("Alice Wonder", 45, "+233-559-999888", "Lagos, Nigeria", "alicewonder@example.com");
             
             assertNotNull(customer);
             assertEquals("Alice Wonder", customer.getName());
@@ -123,48 +123,48 @@ class CustomerTest {
         @DisplayName("Should throw InputMismatchException for invalid name format")
         void invalidNameFormat() {
             assertThrows(InputMismatchException.class, () -> 
-                new RegularCustomer("john", 25, "+233-559-372538", "Bomso"));
+                new RegularCustomer("john", 25, "+233-559-372538", "Bomso", "doe@example.com"));
         }
 
         @Test
         @DisplayName("Should throw InputMismatchException for single word name")
         void singleWordName() {
             assertThrows(InputMismatchException.class, () -> 
-                new RegularCustomer("John", 25, "+233-559-372538", "Bomso"));
+                new RegularCustomer("John", 25, "+233-559-372538", "Bomso", "doe@example.com"));
         }
 
         @Test
         @DisplayName("Should throw InputMismatchException for name with numbers")
         void nameWithNumbers() {
             assertThrows(InputMismatchException.class, () -> 
-                new RegularCustomer("John123 Smith", 25, "+233-559-372538", "Bomso"));
+                new RegularCustomer("John123 Smith", 25, "+233-559-372538", "Bomso", "doe@example.com"));
         }
 
         @Test
         @DisplayName("Should throw InputMismatchException for invalid age - negative")
         void invalidAgeNegative() {
             assertThrows(InputMismatchException.class, () -> 
-                new RegularCustomer("John Smith", -5, "+233-559-372538", "Bomso"));
+                new RegularCustomer("John Smith", -5, "+233-559-372538", "Bomso", "doe@example.com"));
         }
 
         @Test
         @DisplayName("Should throw InputMismatchException for invalid age - zero")
         void invalidAgeZero() {
             assertThrows(InputMismatchException.class, () -> 
-                new RegularCustomer("John Smith", 0, "+233-559-372538", "Bomso"));
+                new RegularCustomer("John Smith", 0, "+233-559-372538", "Bomso", "doe@example.com"));
         }
 
         @Test
         @DisplayName("Should throw InputMismatchException for age over 120")
         void invalidAgeOver120() {
             assertThrows(InputMismatchException.class, () -> 
-                new RegularCustomer("John Smith", 121, "+233-559-372538", "Bomso"));
+                new RegularCustomer("John Smith", 121, "+233-559-372538", "Bomso", "doe@example.com"));
         }
 
         @Test
         @DisplayName("Should accept valid age of 120")
         void validAgeMax() throws InputMismatchException {
-            Customer customer = new RegularCustomer("John Smith", 120, "+233-559-372538", "Bomso");
+            Customer customer = new RegularCustomer("John Smith", 120, "+233-559-372538", "Bomso", "doe@example.com");
             assertEquals(120, customer.getAge());
         }
 
@@ -172,20 +172,20 @@ class CustomerTest {
         @DisplayName("Should throw InputMismatchException for invalid phone format")
         void invalidPhoneFormat() {
             assertThrows(InputMismatchException.class, () -> 
-                new RegularCustomer("John Smith", 25, "0559372538", "Bomso"));
+                new RegularCustomer("John Smith", 25, "0559372538", "Bomso", "doe@example.com"));
         }
 
         @Test
         @DisplayName("Should throw InputMismatchException for phone without country code")
         void phoneWithoutCountryCode() {
             assertThrows(InputMismatchException.class, () -> 
-                new RegularCustomer("John Smith", 25, "559-372538", "Bomso"));
+                new RegularCustomer("John Smith", 25, "559-372538", "Bomso", "doe@example.com"));
         }
 
         @Test
         @DisplayName("Should accept valid international phone format")
         void validInternationalPhone() throws InputMismatchException {
-            Customer customer = new RegularCustomer("John Smith", 25, "+1-555-1234567", "New York");
+            Customer customer = new RegularCustomer("John Smith", 25, "+1-555-1234567", "New York", "doe@example.com");
             assertEquals("+1-555-1234567", customer.getContact());
         }
     }

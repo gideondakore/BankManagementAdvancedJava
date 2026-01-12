@@ -16,6 +16,7 @@ public abstract class Customer implements DisplayCustomerDetails {
     private String address;
     static int customerCounter;
     private CustomerType type;
+    private String email;
 
 
     /**
@@ -24,13 +25,15 @@ public abstract class Customer implements DisplayCustomerDetails {
      * @param age
      * @param contact
      * @param address
+     * @param email
      */
-    protected Customer(String name, int age, String contact, String address) throws InputMismatchException {
+    protected Customer(String name, int age, String contact, String address, String email) throws InputMismatchException {
         this.validateInputs(name, age, contact, address);
         this.name = name;
         this.age = age;
         this.contact = contact;
         this.address = address;
+        this.email = email;
         ++customerCounter;
         this.customerId = "CUS00" + customerCounter;
     }
@@ -87,7 +90,9 @@ public abstract class Customer implements DisplayCustomerDetails {
         return this.type;
     }
 
-    // Setters
+    public String getEmail(){
+        return email;
+    }
 
     /**
      * For setting customer id

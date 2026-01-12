@@ -58,9 +58,9 @@ public class CheckingAccount extends Account{
 
     public String viewAllAccounts(Customer customer){
         return """
-                %-8s            |  %-25s             |  %-8s           |  $%,-5.2f           |  %-5s
+                %-8s            |  %-25s             |  %-8s           |  $%,-5.2f           |  %-5s           | %-5s
                 %-8s            |  Overdraft Limit: $%-8.2f %-10s |  Monthly Fee: $%-9.2f
-                """.formatted(this.getAccountNumber(), customer.getName(), this.getType().getDescription(), this.getAccountBalance(), this.getAccountStatus(), "", this.overdraftLimit, "", this.monthlyFee);
+                """.formatted(this.getAccountNumber(), customer.getName(), this.getType().getDescription(), this.getAccountBalance(), this.getAccountStatus(), customer.getEmail(), "", this.overdraftLimit, "", this.monthlyFee);
     }
 
     @Override

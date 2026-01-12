@@ -26,8 +26,8 @@ class AccountTest {
     @BeforeEach
     void setUp() {
         try {
-            customer = new RegularCustomer("Gideon Dakore", 23, "+233-559-372538", "Bomso, Kumasi");
-            premiumCustomer = new PremiumCustomer("Jane Smith", 35, "+233-559-123456", "Accra, Ghana");
+            customer = new RegularCustomer("Gideon Dakore", 23, "+233-559-372538", "Bomso, Kumasi", "doe@example.com");
+            premiumCustomer = new PremiumCustomer("Jane Smith", 35, "+233-559-123456", "Accra, Ghana", "jansmith@gmail.com");
         } catch (InputMismatchException e) {
             IO.println("Error occurred in the Test class");
             IO.println(e.getMessage());

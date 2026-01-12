@@ -19,9 +19,10 @@ public class RegularCustomer extends Customer{
      * @param age
      * @param contact
      * @param address
+     * @param email
      */
-    public RegularCustomer(String name, int age, String contact, String address) throws InputMismatchException {
-        super(name, age, contact, address);
+    public RegularCustomer(String name, int age, String contact, String address, String email) throws InputMismatchException {
+        super(name, age, contact, address, email);
         this.setType(CustomerType.REGULAR);
     }
 

@@ -15,9 +15,10 @@ public class PremiumCustomer extends Customer{
      * @param age
      * @param contact
      * @param address
+     * @param email
      */
-    public PremiumCustomer(String name, int age, String contact, String address) throws InputMismatchException {
-        super(name, age, contact, address);
+    public PremiumCustomer(String name, int age, String contact, String address, String email) throws InputMismatchException {
+        super(name, age, contact, address, email);
         this.setType(CustomerType.PREMIUM);
     }
 

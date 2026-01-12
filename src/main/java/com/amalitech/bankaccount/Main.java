@@ -138,8 +138,8 @@ public class Main {
     private static Customer createCustomer(CustomerRecords info, CustomerType type) throws InputMismatchException {
         try {
             return (type == CustomerType.REGULAR)
-                    ? new RegularCustomer(info.name(), info.age(), info.contact(), info.address())
-                    : new PremiumCustomer(info.name(), info.age(), info.contact(), info.address());
+                    ? new RegularCustomer(info.name(), info.age(), info.contact(), info.address(), info.email())
+                    : new PremiumCustomer(info.name(), info.age(), info.contact(), info.address(), info.email());
         } catch (InputMismatchException e) {
             throw new InputMismatchException(e.getMessage());
         }
@@ -178,11 +178,11 @@ public class Main {
         try{
 
         Transaction transaction;
-        Account acc1 = new SavingsAccount(new PremiumCustomer("John Smith", 23, "+1-555-7890", "123 Main Street, United State")).deposit(5250);
-        Account acc2 = new CheckingAccount(new PremiumCustomer("Sarah Johnson", 21, "+44-207-9463821", "45 Oak Ave., Apt. 2B, United Kingdom")).deposit(3450);
-        Account acc3 = new SavingsAccount(new RegularCustomer("Michael Chen", 19, "+49-301-2345678", "12-34 Park Lane")).deposit(15750);
-        Account acc4 = new CheckingAccount(new RegularCustomer("Emily Brown", 22, "+33-142-869753", "12-34 Park Lane, Germany")).deposit(890);
-        Account acc5 = new SavingsAccount(new RegularCustomer("David Wilson", 28, "+61-298-765432", "P.O. Box 234 - Australia")).deposit(25300);
+        Account acc1 = new SavingsAccount(new PremiumCustomer("John Smith", 23, "+1-555-7890", "123 Main Street, United State", "jsmith@example.com")).deposit(5250);
+        Account acc2 = new CheckingAccount(new PremiumCustomer("Sarah Johnson", 21, "+44-207-9463821", "45 Oak Ave., Apt. 2B, United Kingdom", "sjohnson@example.com")).deposit(3450);
+        Account acc3 = new SavingsAccount(new RegularCustomer("Michael Chen", 19, "+49-301-2345678", "12-34 Park Lane", "mchen@gmail.com")).deposit(15750);
+        Account acc4 = new CheckingAccount(new RegularCustomer("Emily Brown", 22, "+33-142-869753", "12-34 Park Lane, Germany", "mbrown@outlook.com")).deposit(890);
+        Account acc5 = new SavingsAccount(new RegularCustomer("David Wilson", 28, "+61-298-765432", "P.O. Box 234 - Australia", "dwilson@exmaple.com")).deposit(25300);
 
         Account[] accsArr = new Account[]{acc1, acc2, acc3, acc4, acc5};
 

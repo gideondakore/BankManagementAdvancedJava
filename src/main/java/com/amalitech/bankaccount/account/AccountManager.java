@@ -82,15 +82,15 @@ public class AccountManager {
             return;
         }
 
-        String line = "---------------------------------------------------------------------------------------------------------------------------";
+        String line = "-------------------------------------------------------------------------------------------------------------------------------------------------";
 
         StringBuilder stringBuilder = new StringBuilder();
 
         String heading = """
                 %s
-                %-8s            |  %-25s             |  %-8s           |  %-5s           |  %-5s
+                %-8s            |  %-25s             |  %-8s           |  %-5s           |  %-5s          | %-5s
                 %s
-                """.formatted(line, "ACC N0", "CUSTOMER NAME", "TYPE", "BALANCE", "STATUS", line);
+                """.formatted(line, "ACC N0", "CUSTOMER NAME", "TYPE", "BALANCE", "STATUS", "EMAIL", line);
 
         stringBuilder.append(heading);
 

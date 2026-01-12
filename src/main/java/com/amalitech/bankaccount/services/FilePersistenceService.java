@@ -10,7 +10,6 @@ import com.amalitech.bankaccount.customer.PremiumCustomer;
 import com.amalitech.bankaccount.customer.RegularCustomer;
 import com.amalitech.bankaccount.enums.AccountType;
 import com.amalitech.bankaccount.enums.CustomerType;
-import com.amalitech.bankaccount.enums.TransactionType;
 import com.amalitech.bankaccount.enums.TransferToOrFromType;
 import com.amalitech.bankaccount.exceptions.InputMismatchException;
 import com.amalitech.bankaccount.exceptions.InvalidAmountException;
@@ -23,6 +22,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -105,7 +105,8 @@ public class FilePersistenceService {
             customer.getAddress(),
             account.getType().name(),
             String.valueOf(account.getAccountBalance()),
-            account.getAccountStatus()
+            account.getAccountStatus(),
+            String.valueOf(customer.getEmail())
         );
     }
     
@@ -124,7 +125,7 @@ public class FilePersistenceService {
             List<Account> accounts = lines
                 .filter(line -> !line.isBlank())
                 .map(this::lineToAccount)
-                .filter(account -> account != null)
+                .filter(Objects::nonNull)
                 .collect(Collectors.toList());
             
             IO.println("✓ Loaded " + accounts.size() + " accounts from " + accountsPath.getFileName());
@@ -155,11 +156,12 @@ public class FilePersistenceService {
             AccountType accountType = AccountType.valueOf(parts[6]);
             double balance = Double.parseDouble(parts[7]);
             String status = parts[8];
+            String email = parts[9];
             
             // Create customer based on type
             Customer customer = (customerType == CustomerType.PREMIUM)
-                ? new PremiumCustomer(customerName, age, contact, address)
-                : new RegularCustomer(customerName, age, contact, address);
+                ? new PremiumCustomer(customerName, age, contact, address, email)
+                : new RegularCustomer(customerName, age, contact, address, email);
             
             // Create account based on type
             Account account = (accountType == AccountType.SAVINGS)
@@ -238,7 +240,7 @@ public class FilePersistenceService {
             List<Transaction> transactions = lines
                 .filter(line -> !line.isBlank())
                 .map(this::lineToTransaction)
-                .filter(transaction -> transaction != null)
+                .filter(Objects::nonNull)
                 .collect(Collectors.toList());
             
             IO.println("✓ Loaded " + transactions.size() + " transactions from " + transactionsPath.getFileName());
